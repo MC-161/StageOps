@@ -1,5 +1,7 @@
 package com.operations.StageOps.model;
 
+import java.util.Date;
+
 /**
  * This class represents a ticket for an event. It contains information about the ticket's
  * ID, associated event, seat, price, and status.
@@ -11,6 +13,7 @@ public class Ticket {
     private int seatID;
     private double price;
     private String ticketStatus;
+    private Date saleDate;
 
     /**
      * Constructs a new Ticket object with the given attributes.
@@ -21,12 +24,13 @@ public class Ticket {
      * @param price         the price of the ticket
      * @param ticketStatus  the current status of the ticket (e.g., "Reserved", "Sold")
      */
-    public Ticket(int ticketID, int eventID, int seatID, double price, String ticketStatus) {
+    public Ticket(int ticketID, int eventID, int seatID, double price, String ticketStatus, Date saleDate) {
         this.ticketID = ticketID;
         this.eventID = eventID;
         this.seatID = seatID;
         this.price = price;
         this.ticketStatus = ticketStatus;
+        this.saleDate = saleDate;
     }
 
     /**

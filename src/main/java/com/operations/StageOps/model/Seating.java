@@ -7,7 +7,7 @@ package com.operations.StageOps.model;
  */
 public class Seating {
 
-    private int seatID;
+    private String seatID;
     private int roomID;
     private int seatNumber;
     private boolean isReserved;
@@ -26,7 +26,7 @@ public class Seating {
      * @param isRestricted  whether the seat is restricted
      * @param sectionName   the name of the section to which the seat belongs
      */
-    public Seating(int seatID, int roomID, int seatNumber, boolean isReserved,
+    public Seating(String seatID, int roomID, int seatNumber, boolean isReserved,
                    boolean isAccessible, boolean isRestricted, String sectionName) {
         this.seatID = seatID;
         this.roomID = roomID;
@@ -42,7 +42,7 @@ public class Seating {
      *
      * @return the seat ID
      */
-    public int getSeatID() {
+    public String getSeatID() {
         return seatID;
     }
 
@@ -51,7 +51,7 @@ public class Seating {
      *
      * @param seatID the new seat ID
      */
-    public void setSeatID(int seatID) {
+    public void setSeatID(String seatID) {
         this.seatID = seatID;
     }
 

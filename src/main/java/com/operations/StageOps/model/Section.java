@@ -1,29 +1,39 @@
 package com.operations.StageOps.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This class represents a section in a room. It contains information about the section's
  * ID, layout, section name, and its capacity.
  */
 public class Section {
 
-    private int sectionID;
-    private int layoutID;
+    private int sectionId;
     private String sectionName;
-    private int capacity;
+    private String sectionType;
+    private List<Seating> seats;  // List of seats in this section
+
+    public Section() {}
+
+    public Section(String sectionName, String sectionType) {
+        this.sectionName = sectionName;
+        this.sectionType = sectionType;
+        this.seats = new ArrayList<>();
+    }
 
     /**
      * Constructs a new Section object with the given attributes.
      *
-     * @param sectionID   the unique ID of the section
-     * @param layoutID    the ID of the layout associated with the section
+     * @param sectionId   the unique ID of the section
      * @param sectionName the name of the section
-     * @param capacity    the seating capacity of the section
+     * @param sectionType the type of the section
      */
-    public Section(int sectionID, int layoutID, String sectionName, int capacity) {
-        this.sectionID = sectionID;
-        this.layoutID = layoutID;
+    public Section(int sectionId, String sectionName, String sectionType, int layoutId) {
+        this.sectionId = sectionId;
         this.sectionName = sectionName;
-        this.capacity = capacity;
+        this.sectionType = sectionType;
+        this.seats = new ArrayList<>();
     }
 
     /**
@@ -31,35 +41,17 @@ public class Section {
      *
      * @return the section ID
      */
-    public int getSectionID() {
-        return sectionID;
+    public int getSectionId() {
+        return sectionId;
     }
 
     /**
      * Sets the section ID.
      *
-     * @param sectionID the new section ID
+     * @param sectionId the new section ID
      */
-    public void setSectionID(int sectionID) {
-        this.sectionID = sectionID;
-    }
-
-    /**
-     * Gets the layout ID.
-     *
-     * @return the layout ID
-     */
-    public int getLayoutID() {
-        return layoutID;
-    }
-
-    /**
-     * Sets the layout ID.
-     *
-     * @param layoutID the new layout ID
-     */
-    public void setLayoutID(int layoutID) {
-        this.layoutID = layoutID;
+    public void setSectionId(int sectionId) {
+        this.sectionId = sectionId;
     }
 
     /**
@@ -80,36 +72,20 @@ public class Section {
         this.sectionName = sectionName;
     }
 
-    /**
-     * Gets the seating capacity of the section.
-     *
-     * @return the seating capacity
-     */
-    public int getCapacity() {
-        return capacity;
+
+    public String getSectionType() {
+        return sectionType;
     }
 
-    /**
-     * Sets the seating capacity of the section.
-     *
-     * @param capacity the new seating capacity
-     */
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
+    public void setSectionType(String sectionType) {
+        this.sectionType = sectionType;
     }
 
-    /**
-     * Provides a string representation of the Section object.
-     *
-     * @return a string describing the section object
-     */
-    @Override
-    public String toString() {
-        return "Section{" +
-                "sectionID=" + sectionID +
-                ", layoutID=" + layoutID +
-                ", sectionName='" + sectionName + '\'' +
-                ", capacity=" + capacity +
-                '}';
+    public List<Seating> getSeats() {
+        return seats;
+    }
+
+    public void setSeats(List<Seating> seats) {
+        this.seats = seats;
     }
 }

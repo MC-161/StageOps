@@ -1,5 +1,7 @@
 package com.operations.StageOps.model;
 
+import java.util.List;
+
 /**
  * Represents the layout configuration of a room for an event.
  */
@@ -8,6 +10,8 @@ public class LayoutConfiguration {
     private String layoutName;
     private int maxCapacity;
     private int roomId;
+    private List<Section> sections;
+    private String layoutType;
 
     /**
      * Default constructor.
@@ -22,12 +26,15 @@ public class LayoutConfiguration {
      * @param layoutName Name of the layout configuration.
      * @param maxCapacity Maximum number of people the layout can accommodate.
      * @param roomId     Room associated with this layout.
+     * @param layoutType Type of layout (e.g., theater, classroom, banquet).
      */
-    public LayoutConfiguration(int layoutId, String layoutName, int maxCapacity, int roomId) {
+    public LayoutConfiguration(int layoutId, String layoutName, int maxCapacity, int roomId, String layoutType) {
         this.layoutId = layoutId;
         this.layoutName = layoutName;
         this.maxCapacity = maxCapacity;
         this.roomId = roomId;
+        this.layoutType = layoutType;
+        this.sections = sections;
     }
 
     public int getLayoutId() {
@@ -60,5 +67,21 @@ public class LayoutConfiguration {
 
     public void setRoomId(int roomId) {
         this.roomId = roomId;
+    }
+
+    public String getLayoutType() {
+        return layoutType;
+    }
+
+    public void setLayoutType(String layoutType) {
+        this.layoutType = layoutType;
+    }
+
+    public List<Section> getSections() {
+        return sections;
+    }
+
+    public void setSections(List<Section> sections) {
+        this.sections = sections;
     }
 }

@@ -11,7 +11,6 @@ public class Room {
     private int capacity;
     private String roomType;
     private String location;
-    private List<Seating> seatingArrangements;
     private LayoutConfiguration layoutConfiguration;
 
     /**
@@ -38,7 +37,6 @@ public class Room {
         this.capacity = capacity;
         this.roomType = roomType;
         this.location = location;
-        this.seatingArrangements = seatingArrangements;
         this.layoutConfiguration = layoutConfiguration;
     }
 
@@ -80,14 +78,6 @@ public class Room {
 
     public void setLocation(String location) {
         this.location = location;
-    }
-
-    public List<Seating> getSeatingArrangements() {
-        return seatingArrangements;
-    }
-
-    public void setSeatingArrangements(List<Seating> seatingArrangements) {
-        this.seatingArrangements = seatingArrangements;
     }
 
     public LayoutConfiguration getLayoutConfiguration() {
