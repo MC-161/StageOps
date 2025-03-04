@@ -111,9 +111,7 @@ public class Event {
         this.eventType = eventType;
     }
 
-    public double getTotalRevenue() {
-        return totalRevenue;
-    }
+    public double getTotalRevenue() { return calculateRevenue(25); }
 
     public void setTotalRevenue(double totalRevenue) {
         this.totalRevenue = totalRevenue;
@@ -141,5 +139,9 @@ public class Event {
 
     public void setEndTime(ZonedDateTime endTime) {
         this.endTime = endTime;
+    }
+
+    public double calculateRevenue(double ticketPrice) {
+        return ticketsSold * ticketPrice;
     }
 }

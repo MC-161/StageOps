@@ -1,6 +1,8 @@
 package com.operations.StageOps.model;
 
 
+import com.operations.StageOps.util.CostCalculator;
+
 import java.util.Date;
 
 
@@ -168,6 +170,9 @@ public class Booking {
      */
     public void setTotalCost(double totalCost) {
         this.totalCost = totalCost;
+    }
+    public void updateTotalCost(double pricePerDay) {
+        this.totalCost = CostCalculator.calculateTotalCost(this.startDate, this.endDate, pricePerDay);
     }
 }
 // Get all seats
