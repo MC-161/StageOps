@@ -1,47 +1,73 @@
 package com.operations.StageOps.service;
 
-
-
 import com.operations.StageOps.model.Event;
 import com.operations.StageOps.model.Seating;
-import com.operations.StageOps.model.Section;
 import com.operations.StageOps.repository.EventRepository;
 import com.operations.StageOps.repository.SeatingRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
 
+/**
+ * Service class for managing Event entities.
+ * It provides methods for CRUD operations (Create, Read, Update, Delete) and other business logic related to events.
+ * The class interacts with the `EventRepository` and `SeatingRepository` to perform database operations.
+ */
 @Service
 public class EventService {
 
     private final EventRepository eventRepository;
-    private SeatingRepository seatingRepository;
+    private final SeatingRepository seatingRepository;
 
+    /**
+     * Constructor for initializing the EventRepository and SeatingRepository.
+     *
+     * @param eventRepository the EventRepository used for interacting with the event database.
+     * @param seatingRepository the SeatingRepository used for interacting with the seating database.
+     */
     public EventService(EventRepository eventRepository, SeatingRepository seatingRepository) {
         this.eventRepository = eventRepository;
         this.seatingRepository = seatingRepository;
     }
 
-    // Save a new event
+    /**
+     * Saves a new event record into the database.
+     *
+     * @param event the Event object containing the data to be saved.
+     * @return the number of rows affected by the insert query (usually 1 if successful).
+     */
     public int saveEvent(Event event) {
         return eventRepository.save(event);
     }
 
-    // Get all events
+    /**
+     * Retrieves all events from the database.
+     *
+     * @return a list of Event objects representing all events in the database.
+     */
     public List<Event> getAllEvents() {
         return eventRepository.getAllEvents();
     }
 
-    // Get event by ID
+    /**
+     * Retrieves a specific event by its ID from the database.
+     *
+     * @param eventId the ID of the event to retrieve.
+     * @return the Event object corresponding to the given event ID.
+     */
     public Event getEventById(int eventId) {
         return eventRepository.getEventById(eventId);
     }
 
-    // Update event
-    // Update event
+    /**
+     * Updates an existing event record in the database.
+     *
+     * @param eventId the ID of the event to be updated.
+     * @param updatedEvent the Event object containing the updated data.
+     * @return the updated Event object.
+     */
     public Event updateEvent(int eventId, Event updatedEvent) {
         // Fetch the existing event by eventId
         Event existingEvent = eventRepository.getEventById(eventId);
@@ -65,26 +91,54 @@ public class EventService {
 
         return existingEvent;
     }
+
+    /**
+     * Retrieves all available seats for a specific event.
+     *
+     * @param eventId the ID of the event for which available seats are to be fetched.
+     * @return a list of Seating objects representing the available seats for the event.
+     */
     public List<Seating> getAvailableSeats(int eventId) {
-        // Fetch the available seats using the repository method
         return eventRepository.getAvailableSeatsForEvent(eventId);
     }
 
-    // Delete event
+    /**
+     * Deletes an event record from the database based on the event ID.
+     *
+     * @param eventId the ID of the event to be deleted.
+     * @return the number of rows affected by the delete query (usually 1 if successful).
+     */
     public int deleteEvent(int eventId) {
         return eventRepository.delete(eventId);
     }
 
-    // Get events for a specific date
+    /**
+     * Retrieves all events scheduled for a specific date.
+     *
+     * @param date the LocalDate representing the date to search for events.
+     * @return a list of Event objects that are scheduled for the given date.
+     */
     public List<Event> getEventsForDate(LocalDate date) {
         return eventRepository.getEventsForDate(date);  // Query the repository for events on the date
     }
 
-    // Get events within a date range (start date to end date)
+    /**
+     * Retrieves all events scheduled within a specific date range.
+     *
+     * @param startDate the starting date of the range.
+     * @param endDate the ending date of the range.
+     * @return a list of Event objects that are scheduled within the date range.
+     */
     public List<Event> getEventsForDateRange(LocalDate startDate, LocalDate endDate) {
         return eventRepository.getEventsForDateRange(startDate, endDate);  // Query the repository for events in the range
     }
 
+    /**
+     * Schedules an event for marketing, allowing it to be created only if it's within a 3-week window.
+     *
+     * @param event the Event object to be scheduled for marketing.
+     * @return a message indicating whether the event was successfully scheduled or not.
+     */
     public String scheduleForMarketing(Event event) {
         // Ensure the event's eventDate is a LocalDate (convert if necessary)
         LocalDate eventDate = event.getEventDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -104,8 +158,14 @@ public class EventService {
         return result > 0 ? "Event scheduled successfully for marketing!" : "Error scheduling event for marketing.";
     }
 
-
-    // Method to hold seats for marketing (group booking)
+    /**
+     * Holds seats for a group booking, ensuring that the group size is at least 12 people and seats are available.
+     *
+     * @param eventId the ID of the event for which seats are being held.
+     * @param groupSize the number of seats being held.
+     * @param seatIds a list of seat IDs to be held.
+     * @return a message indicating whether the seats were successfully held or not.
+     */
     public String holdSeatsForGroupBooking(int eventId, int groupSize, List<Integer> seatIds) {
         if (groupSize < 12) {
             return "Error: Group booking must be for at least 12 people.";
@@ -128,5 +188,4 @@ public class EventService {
 
         return "Seats held successfully for group booking.";
     }
-};
-
+}
