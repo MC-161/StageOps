@@ -3,94 +3,101 @@ package com.operations.StageOps.model;
 import java.util.Date;
 
 /**
- * This class represents a ticket for an event. It contains information about the ticket's
- * ID, associated event, seat, price, and status.
+ * Represents a ticket purchased for an event. The class includes details like
+ * the ticket ID, associated event ID, seat ID, price, ticket status, and sale date.
  */
 public class Ticket {
 
-    private int ticketID;
-    private int eventID;
-    private int seatID;
+    private int ticketId;
+    private int eventId;
+    private String seatId;
     private double price;
     private String ticketStatus;
     private Date saleDate;
 
     /**
-     * Constructs a new Ticket object with the given attributes.
-     *
-     * @param ticketID      the unique ID of the ticket
-     * @param eventID       the ID of the event associated with the ticket
-     * @param seatID        the ID of the seat associated with the ticket
-     * @param price         the price of the ticket
-     * @param ticketStatus  the current status of the ticket (e.g., "Reserved", "Sold")
+     * Default constructor for creating an empty instance of the Ticket class.
+     * Initializes all attributes to their default values.
      */
-    public Ticket(int ticketID, int eventID, int seatID, double price, String ticketStatus, Date saleDate) {
-        this.ticketID = ticketID;
-        this.eventID = eventID;
-        this.seatID = seatID;
+    public Ticket() {}
+
+    /**
+     * Constructor for creating a new instance of the Ticket class with specific values.
+     *
+     * @param ticketId The unique identifier for the ticket.
+     * @param eventId The ID of the event for which this ticket is purchased.
+     * @param seatId The seat ID associated with the ticket.
+     * @param price The price of the ticket.
+     * @param ticketStatus The current status of the ticket (e.g., "Sold", "Reserved").
+     * @param saleDate The date when the ticket was sold.
+     */
+    public Ticket(int ticketId, int eventId, String seatId, double price, String ticketStatus, Date saleDate) {
+        this.ticketId = ticketId;
+        this.eventId = eventId;
+        this.seatId = seatId;
         this.price = price;
         this.ticketStatus = ticketStatus;
         this.saleDate = saleDate;
     }
 
     /**
-     * Gets the ticket ID.
+     * Gets the unique identifier of the ticket.
      *
-     * @return the ticket ID
+     * @return The ticket ID.
      */
-    public int getTicketID() {
-        return ticketID;
+    public int getTicketId() {
+        return ticketId;
     }
 
     /**
-     * Sets the ticket ID.
+     * Sets the unique identifier for the ticket.
      *
-     * @param ticketID the new ticket ID
+     * @param ticketId The ticket ID to be set.
      */
-    public void setTicketID(int ticketID) {
-        this.ticketID = ticketID;
+    public void setTicketId(int ticketId) {
+        this.ticketId = ticketId;
     }
 
     /**
-     * Gets the event ID.
+     * Gets the event ID associated with this ticket.
      *
-     * @return the event ID
+     * @return The event ID.
      */
-    public int getEventID() {
-        return eventID;
+    public int getEventId() {
+        return eventId;
     }
 
     /**
-     * Sets the event ID.
+     * Sets the event ID for the ticket.
      *
-     * @param eventID the new event ID
+     * @param eventId The event ID to be set.
      */
-    public void setEventID(int eventID) {
-        this.eventID = eventID;
+    public void setEventId(int eventId) {
+        this.eventId = eventId;
     }
 
     /**
-     * Gets the seat ID.
+     * Gets the seat ID for the ticket.
      *
-     * @return the seat ID
+     * @return The seat ID.
      */
-    public int getSeatID() {
-        return seatID;
+    public String getSeatId() {
+        return seatId;
     }
 
     /**
-     * Sets the seat ID.
+     * Sets the seat ID for the ticket.
      *
-     * @param seatID the new seat ID
+     * @param seatId The seat ID to be set.
      */
-    public void setSeatID(int seatID) {
-        this.seatID = seatID;
+    public void setSeatId(String seatId) {
+        this.seatId = seatId;
     }
 
     /**
      * Gets the price of the ticket.
      *
-     * @return the price of the ticket
+     * @return The ticket price.
      */
     public double getPrice() {
         return price;
@@ -99,43 +106,46 @@ public class Ticket {
     /**
      * Sets the price of the ticket.
      *
-     * @param price the new price of the ticket
+     * @param price The price to be set.
      */
     public void setPrice(double price) {
         this.price = price;
     }
 
     /**
-     * Gets the ticket status.
+     * Gets the current status of the ticket.
+     * This could represent whether the ticket is sold, reserved, etc.
      *
-     * @return the status of the ticket (e.g., "Reserved", "Sold")
+     * @return The ticket status.
      */
     public String getTicketStatus() {
         return ticketStatus;
     }
 
     /**
-     * Sets the ticket status.
+     * Sets the status of the ticket.
      *
-     * @param ticketStatus the new ticket status
+     * @param ticketStatus The ticket status to be set (e.g., "Sold", "Reserved").
      */
     public void setTicketStatus(String ticketStatus) {
         this.ticketStatus = ticketStatus;
     }
 
     /**
-     * Provides a string representation of the Ticket object.
+     * Gets the sale date of the ticket.
      *
-     * @return a string describing the ticket object
+     * @return The date the ticket was sold.
      */
-    @Override
-    public String toString() {
-        return "Ticket{" +
-                "ticketID=" + ticketID +
-                ", eventID=" + eventID +
-                ", seatID=" + seatID +
-                ", price=" + price +
-                ", ticketStatus='" + ticketStatus + '\'' +
-                '}';
+    public Date getSaleDate() {
+        return saleDate;
+    }
+
+    /**
+     * Sets the sale date of the ticket.
+     *
+     * @param saleDate The date to be set as the sale date.
+     */
+    public void setSaleDate(Date saleDate) {
+        this.saleDate = saleDate;
     }
 }
