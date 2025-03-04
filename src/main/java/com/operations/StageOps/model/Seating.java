@@ -1,183 +1,187 @@
 package com.operations.StageOps.model;
 
 /**
- * This class represents a seat in a room. It contains information about the seat's
- * ID, room, seat number, reservation status, accessibility, restriction status,
- * and the section name to which it belongs.
+ * Represents a seat in a room, containing information about its unique ID, seating position,
+ * and status such as whether the seat is reserved, accessible, or restricted.
  */
 public class Seating {
 
-    private String seatID;
-    private int roomID;
+    private String seatId;
+    private int roomId;
     private int seatNumber;
     private boolean isReserved;
     private boolean isAccessible;
     private boolean isRestricted;
     private String sectionName;
+    private String status;
 
     /**
-     * Constructs a new Seating object with the given attributes.
-     *
-     * @param seatID        the unique ID of the seat
-     * @param roomID        the ID of the room where the seat is located
-     * @param seatNumber    the seat number within the room
-     * @param isReserved    whether the seat is reserved
-     * @param isAccessible  whether the seat is accessible
-     * @param isRestricted  whether the seat is restricted
-     * @param sectionName   the name of the section to which the seat belongs
+     * Default constructor for creating an empty instance of the Seating class.
+     * It initializes the object without setting any values.
      */
-    public Seating(String seatID, int roomID, int seatNumber, boolean isReserved,
-                   boolean isAccessible, boolean isRestricted, String sectionName) {
-        this.seatID = seatID;
-        this.roomID = roomID;
+    public Seating() {}
+
+    /**
+     * Constructor for creating a new instance of the Seating class with specific values.
+     *
+     * @param seatId The unique identifier of the seat.
+     * @param roomId The room ID where the seat is located.
+     * @param seatNumber The seat number within the room.
+     * @param isReserved Indicates whether the seat is reserved (true if reserved).
+     * @param isAccessible Indicates whether the seat is accessible (e.g., for disabled users).
+     * @param isRestricted Indicates whether the seat is restricted (e.g., VIP seating).
+     * @param sectionName The name of the section where the seat is located.
+     */
+    public Seating(String seatId, int roomId, int seatNumber, boolean isReserved, boolean isAccessible, boolean isRestricted, String sectionName) {
+        this.seatId = seatId;
+        this.roomId = roomId;
         this.seatNumber = seatNumber;
         this.isReserved = isReserved;
         this.isAccessible = isAccessible;
         this.isRestricted = isRestricted;
-        this.sectionName = sectionName;
     }
 
     /**
-     * Gets the seat ID.
+     * Gets the unique identifier of the seat.
      *
-     * @return the seat ID
+     * @return The seat ID.
      */
-    public String getSeatID() {
-        return seatID;
+    public String getSeatId() {
+        return seatId;
     }
 
     /**
-     * Sets the seat ID.
+     * Sets the unique identifier of the seat.
      *
-     * @param seatID the new seat ID
+     * @param seatId The seat ID to be set.
      */
-    public void setSeatID(String seatID) {
-        this.seatID = seatID;
+    public void setSeatId(String seatId) {
+        this.seatId = seatId;
     }
 
     /**
-     * Gets the room ID.
+     * Gets the room ID where the seat is located.
      *
-     * @return the room ID
+     * @return The room ID of the seat.
      */
-    public int getRoomID() {
-        return roomID;
+    public int getRoomId() {
+        return roomId;
     }
 
     /**
-     * Sets the room ID.
+     * Sets the room ID where the seat is located.
      *
-     * @param roomID the new room ID
+     * @param roomId The room ID to be set.
      */
-    public void setRoomID(int roomID) {
-        this.roomID = roomID;
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
     }
 
     /**
-     * Gets the seat number.
+     * Gets the seat number within the room.
      *
-     * @return the seat number
+     * @return The seat number.
      */
     public int getSeatNumber() {
         return seatNumber;
     }
 
     /**
-     * Sets the seat number.
+     * Sets the seat number within the room.
      *
-     * @param seatNumber the new seat number
+     * @param seatNumber The seat number to be set.
      */
     public void setSeatNumber(int seatNumber) {
         this.seatNumber = seatNumber;
     }
 
     /**
-     * Checks if the seat is reserved.
+     * Indicates whether the seat is reserved.
      *
-     * @return true if the seat is reserved, false otherwise
+     * @return true if the seat is reserved; false otherwise.
      */
     public boolean isReserved() {
         return isReserved;
     }
 
     /**
-     * Sets the reservation status of the seat.
+     * Sets whether the seat is reserved.
      *
-     * @param reserved true to reserve the seat, false otherwise
+     * @param reserved true if the seat is reserved; false otherwise.
      */
     public void setReserved(boolean reserved) {
         isReserved = reserved;
     }
 
     /**
-     * Checks if the seat is accessible.
+     * Indicates whether the seat is accessible for disabled users.
      *
-     * @return true if the seat is accessible, false otherwise
+     * @return true if the seat is accessible; false otherwise.
      */
     public boolean isAccessible() {
         return isAccessible;
     }
 
     /**
-     * Sets the accessibility status of the seat.
+     * Sets whether the seat is accessible for disabled users.
      *
-     * @param accessible true if the seat is accessible, false otherwise
+     * @param accessible true if the seat is accessible; false otherwise.
      */
     public void setAccessible(boolean accessible) {
         isAccessible = accessible;
     }
 
     /**
-     * Checks if the seat is restricted.
+     * Indicates whether the seat is restricted, such as VIP seating.
      *
-     * @return true if the seat is restricted, false otherwise
+     * @return true if the seat is restricted; false otherwise.
      */
     public boolean isRestricted() {
         return isRestricted;
     }
 
     /**
-     * Sets the restriction status of the seat.
+     * Sets whether the seat is restricted, such as VIP seating.
      *
-     * @param restricted true if the seat is restricted, false otherwise
+     * @param restricted true if the seat is restricted; false otherwise.
      */
     public void setRestricted(boolean restricted) {
         isRestricted = restricted;
     }
 
     /**
-     * Gets the section name of the seat.
+     * Gets the name of the section where the seat is located.
      *
-     * @return the section name
+     * @return The section name.
      */
     public String getSectionName() {
         return sectionName;
     }
 
     /**
-     * Sets the section name of the seat.
+     * Sets the name of the section where the seat is located.
      *
-     * @param sectionName the new section name
+     * @param sectionName The section name to be set.
      */
     public void setSectionName(String sectionName) {
         this.sectionName = sectionName;
     }
 
     /**
-     * Provides a string representation of the Seating object.
+     * Sets the status of the seat.
      *
-     * @return a string describing the seating object
+     * @param status The status to be set for the seat (e.g., "available", "booked").
      */
-    @Override
-    public String toString() {
-        return "Seating{" +
-                "seatID=" + seatID +
-                ", roomID=" + roomID +
-                ", seatNumber=" + seatNumber +
-                ", isReserved=" + isReserved +
-                ", isAccessible=" + isAccessible +
-                ", isRestricted=" + isRestricted +
-                ", sectionName='" + sectionName + '\'' +
-                '}';
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    /**
+     * Gets the status of the seat (e.g., "available", "booked").
+     *
+     * @return The current status of the seat.
+     */
+    public String getStatus() {
+        return status;
     }
 }
