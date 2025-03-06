@@ -83,7 +83,7 @@ public class EventService {
             existingEvent.setTicketsSold(updatedEvent.getTicketsSold());
             existingEvent.setEventType(updatedEvent.getEventType());
             existingEvent.setTotalRevenue(updatedEvent.getTotalRevenue());
-            existingEvent.setLayoutConfiguration(updatedEvent.getLayoutConfiguration());
+            existingEvent.setLayoutId(updatedEvent.getLayoutId());
 
             // Save the updated event back to the database
             eventRepository.update(existingEvent);

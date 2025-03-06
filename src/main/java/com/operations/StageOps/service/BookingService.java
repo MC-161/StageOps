@@ -83,4 +83,8 @@ public class BookingService {
     public List<Booking> getBookingsForRoom(String roomId) {
         return bookingRepository.getBookingsForRoom(roomId);
     }
+
+    public List<Booking> getUpcomingBookings() {
+        return bookingRepository.getUpcomingBookings();
+    }
 }

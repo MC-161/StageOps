@@ -4,6 +4,8 @@ import com.operations.StageOps.model.Booking;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -128,5 +130,26 @@ public class BookingRepository {
         String sql = "INSERT INTO revenue_tracking (room_id, event_id, total_revenue, ticket_sales, venue_hire) VALUES (?, ?, ?, ?, ?) " +
                 "ON DUPLICATE KEY UPDATE total_revenue = total_revenue + VALUES(total_revenue), ticket_sales = ticket_sales + VALUES(ticket_sales), venue_hire = venue_hire + VALUES(venue_hire)";
         jdbcTemplate.update(sql, roomId, eventId, totalRevenue, ticketSales, venueHire);
+    }
+
+
+    public List<Booking> getUpcomingBookings() {
+        // Get the current date
+        LocalDate currentDate = LocalDate.now();
+        Date currentSqlDate = Date.valueOf(currentDate);
+
+        // Query to select bookings with start date greater than the current date
+        String sql = "SELECT * FROM bookings WHERE start_date > ?";
+
+        // Execute query and return list of upcoming bookings
+        return jdbcTemplate.query(sql, new Object[]{currentSqlDate}, (rs, rowNum) -> new Booking(
+                rs.getInt("booking_id"),
+                rs.getInt("client_id"),
+                rs.getInt("room_id"),
+                rs.getDate("start_date"),
+                rs.getDate("end_date"),
+                rs.getString("status"),
+                rs.getDouble("total_cost")
+        ));
     }
 }

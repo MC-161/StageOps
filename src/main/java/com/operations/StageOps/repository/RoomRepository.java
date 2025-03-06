@@ -34,7 +34,7 @@ public class RoomRepository {
      * @return the number of rows affected by the insert query (usually 1 if successful).
      */
     public int save(Room room) {
-        String sql = "INSERT INTO room (room_name, capacity, room_type, location, layout_id) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO rooms (room_name, capacity, room_type, location, layout_id) VALUES (?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql, room.getRoomName(), room.getCapacity(), room.getRoomType(),
                 room.getLocation(), room.getLayoutConfiguration().getLayoutId());
     }
@@ -46,7 +46,7 @@ public class RoomRepository {
      * @return a Room object with the details of the room and its associated layout configuration.
      */
     public Room getRoomById(int roomId) {
-        String sql = "SELECT * FROM room WHERE room_id = ?";
+        String sql = "SELECT * FROM rooms WHERE room_id = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{roomId}, (rs, rowNum) -> {
             Room room = new Room();
             room.setRoomId(rs.getInt("room_id"));
@@ -66,7 +66,7 @@ public class RoomRepository {
      * @return a list of Room objects, each representing a room with its layout configuration.
      */
     public List<Room> getAllRooms() {
-        String sql = "SELECT * FROM room";
+        String sql = "SELECT * FROM rooms";
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             Room room = new Room();
             room.setRoomId(rs.getInt("room_id"));
@@ -87,7 +87,7 @@ public class RoomRepository {
      * @return the number of rows affected by the update query.
      */
     public int updateRoom(Room room) {
-        String sql = "UPDATE room SET room_name = ?, capacity = ?, room_type = ?, location = ?, layout_id = ? WHERE room_id = ?";
+        String sql = "UPDATE rooms SET room_name = ?, capacity = ?, room_type = ?, location = ?, layout_id = ? WHERE room_id = ?";
         return jdbcTemplate.update(sql,
                 room.getRoomName(),
                 room.getCapacity(),
@@ -104,7 +104,7 @@ public class RoomRepository {
      * @return the number of rows affected by the delete query (usually 1 if successful).
      */
     public int deleteRoom(int roomId) {
-        String sql = "DELETE FROM room WHERE room_id = ?";
+        String sql = "DELETE FROM rooms WHERE room_id = ?";
         return jdbcTemplate.update(sql, roomId);  // Executes the delete operation for the given roomId.
     }
 }

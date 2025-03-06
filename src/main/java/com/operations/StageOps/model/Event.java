@@ -14,12 +14,12 @@ public class Event {
     private double totalRevenue;
     private ZonedDateTime startTime;
     private ZonedDateTime endTime;
-    private LayoutConfiguration layoutConfiguration;  // Link to the layout used for the event
+    private int layoutId;  // Link to the layout used for the event
 
     // Constructors, Getters, and Setters
     public Event() {}
 
-    public Event(int eventId, String eventName, Date eventDate, ZonedDateTime startTime, ZonedDateTime endTime, int roomId, int ticketsAvailable, int ticketsSold, String eventType, double totalRevenue, LayoutConfiguration layoutConfiguration) {
+    public Event(int eventId, String eventName, Date eventDate, ZonedDateTime startTime, ZonedDateTime endTime, int roomId, int ticketsAvailable, int ticketsSold, String eventType, double totalRevenue, int layoutId) {
         this.eventId = eventId;
         this.eventName = eventName;
         this.eventDate = eventDate;
@@ -30,7 +30,7 @@ public class Event {
         this.ticketsSold = ticketsSold;
         this.eventType = eventType;
         this.totalRevenue = totalRevenue;
-        this.layoutConfiguration = layoutConfiguration;
+        this.layoutId = layoutId;
     }
 
     public int getEventId() { return eventId; }
@@ -57,8 +57,8 @@ public class Event {
     public double getTotalRevenue() { return calculateRevenue(25); }
     public void setTotalRevenue(double totalRevenue) { this.totalRevenue = totalRevenue; }
 
-    public LayoutConfiguration getLayoutConfiguration() { return layoutConfiguration; }
-    public void setLayoutConfiguration(LayoutConfiguration layoutConfiguration) { this.layoutConfiguration = layoutConfiguration; }
+    public int getLayoutId() { return layoutId; }
+    public void setLayoutId(int layoutId) { this.layoutId = layoutId; }
 
     public ZonedDateTime getEndTime() {
         return endTime;

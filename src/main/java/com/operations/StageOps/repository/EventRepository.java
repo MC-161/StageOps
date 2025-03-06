@@ -48,7 +48,7 @@ public class EventRepository {
 
         // Check if the selected layout is part of the valid layouts for this room
         boolean isValidLayout = validLayouts.stream()
-                .anyMatch(layout -> layout.getLayoutId() == event.getLayoutConfiguration().getLayoutId());
+                .anyMatch(layout -> layout.getLayoutId() == event.getLayoutId());
 
         if (!isValidLayout) {
             throw new IllegalArgumentException("The selected layout is not associated with the specified room.");
@@ -68,12 +68,12 @@ public class EventRepository {
                 event.getTicketsSold(),
                 event.getEventType(),
                 event.getTotalRevenue(),
-                event.getLayoutConfiguration().getLayoutId());
+                event.getLayoutId());
 
         // If the event was successfully inserted, update the room's layout_id
         if (rowsAffected > 0) {
             String updateRoomSql = "UPDATE rooms SET layout_id = ? WHERE room_id = ?";
-            jdbcTemplate.update(updateRoomSql, event.getLayoutConfiguration().getLayoutId(), event.getRoomId());
+            jdbcTemplate.update(updateRoomSql, event.getLayoutId(), event.getRoomId());
         }
 
         return rowsAffected;
@@ -118,7 +118,7 @@ public class EventRepository {
                 event.getTicketsSold(),
                 event.getEventType(),
                 event.getTotalRevenue(),
-                event.getLayoutConfiguration().getLayoutId(),
+                event.getLayoutId(),
                 event.getEventId());
     }
 
@@ -209,7 +209,7 @@ public class EventRepository {
                     rs.getInt("tickets_sold"),
                     rs.getString("event_type"),
                     rs.getDouble("total_revenue"),
-                    new LayoutConfiguration(rs.getInt("layout_id"), "", 0, rs.getInt("room_id"), "")
+                    rs.getInt("layout_id")
             );
         }
     }
