@@ -34,8 +34,8 @@ public class SeatingRepository {
      * @return the number of rows affected by the insert query (usually 1 if successful).
      */
     public int save(Seating seating) {
-        String sql = "INSERT INTO seating (seat_id, room_id, seat_number, is_reserved, is_accessible, is_restricted, section_name) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, seating.getSeatId(), seating.getRoomId(), seating.getSeatNumber(), seating.isReserved(), seating.isAccessible(), seating.isRestricted(), seating.getSectionName());
+        String sql = "INSERT INTO seating (seat_id, room_id, seat_number, is_accessible, is_restricted, section_name) VALUES (?, ?, ?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, seating.getSeatId(), seating.getRoomId(), seating.getSeatNumber(),seating.isAccessible(), seating.isRestricted(), seating.getSectionName());
     }
 
     /**
@@ -49,7 +49,7 @@ public class SeatingRepository {
         String sql = "SELECT * FROM seating WHERE room_id = ? AND section_name = ?";
         return jdbcTemplate.query(sql, new Object[]{roomId, sectionName}, (rs, rowNum) ->
                 new Seating(rs.getString("seat_id"), rs.getInt("room_id"), rs.getInt("seat_number"),
-                        rs.getBoolean("is_reserved"), rs.getBoolean("is_accessible"), rs.getBoolean("is_restricted"), rs.getString("section_name")));
+                        rs.getBoolean("is_accessible"), rs.getBoolean("is_restricted"), rs.getString("section_name")));
     }
 
     /**
@@ -62,7 +62,7 @@ public class SeatingRepository {
         String sql = "SELECT * FROM seating WHERE room_id = ?";
         return jdbcTemplate.query(sql, new Object[]{roomId}, (rs, rowNum) ->
                 new Seating(rs.getString("seat_id"), rs.getInt("room_id"), rs.getInt("seat_number"),
-                        rs.getBoolean("is_reserved"), rs.getBoolean("is_accessible"), rs.getBoolean("is_restricted"), rs.getString("section_name")));
+                        rs.getBoolean("is_accessible"), rs.getBoolean("is_restricted"), rs.getString("section_name")));
     }
 
     /**
@@ -71,11 +71,10 @@ public class SeatingRepository {
      * @param seatId the ID of the seat.
      * @return the Seating object corresponding to the given seat ID.
      */
-    public Seating getSeatById(UUID seatId) {
+    public Seating getSeatById(String seatId) {
         String sql = "SELECT * FROM seating WHERE seat_id = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{seatId}, (rs, rowNum) -> new Seating(rs.getString("seat_id"), rs.getInt("room_id"), rs.getInt("seat_number"), rs.getBoolean("is_reserved"), rs.getBoolean("is_accessible"), rs.getBoolean("is_restricted"), rs.getString("section_name")));
+        return jdbcTemplate.queryForObject(sql, new Object[]{seatId}, (rs, rowNum) -> new Seating(rs.getString("seat_id"), rs.getInt("room_id"), rs.getInt("seat_number"), rs.getBoolean("is_accessible"), rs.getBoolean("is_restricted"), rs.getString("section_name")));
     }
-
     /**
      * Updates an existing seating record in the 'seating' table.
      *
@@ -83,8 +82,8 @@ public class SeatingRepository {
      * @return the number of rows affected by the update query.
      */
     public int update(Seating seating) {
-        String sql = "UPDATE seating SET seat_id = ?,  room_id = ?, seat_number = ?, is_reserved = ?, is_accessible = ?, is_restricted = ?, section_name = ? WHERE seat_id = ?";
-        return jdbcTemplate.update(sql,seating.getSeatId(), seating.getRoomId(), seating.getSeatNumber(), seating.isReserved(), seating.isAccessible(), seating.isRestricted(), seating.getSectionName(), seating.getSeatId());
+        String sql = "UPDATE seating SET seat_id = ?,  room_id = ?, seat_number = ?, is_accessible = ?, is_restricted = ?, section_name = ? WHERE seat_id = ?";
+        return jdbcTemplate.update(sql,seating.getSeatId(), seating.getRoomId(), seating.getSeatNumber(), seating.isAccessible(), seating.isRestricted(), seating.getSectionName(), seating.getSeatId());
     }
 
     /**
@@ -108,7 +107,7 @@ public class SeatingRepository {
         String sql = "SELECT * FROM seating WHERE room_id = ?";
         return jdbcTemplate.query(sql, new Object[]{roomId}, (rs, rowNum) ->
                 new Seating(rs.getString("seat_id"), rs.getInt("room_id"), rs.getInt("seat_number"),
-                        rs.getBoolean("is_reserved"), rs.getBoolean("is_accessible"), rs.getBoolean("is_restricted"), rs.getString("section_name")));
+                        rs.getBoolean("is_accessible"), rs.getBoolean("is_restricted"), rs.getString("section_name")));
     }
 
     /**
@@ -142,17 +141,42 @@ public class SeatingRepository {
      * @return a list of Seating objects corresponding to available seats for the event.
      */
     public List<Seating> getAvailableSeatsForEvent(int eventId) {
-        String sql = "SELECT * FROM seating WHERE event_id = ? AND is_reserved = false";
-        return jdbcTemplate.query(sql, new Object[]{eventId}, (rs, rowNum) -> {
-            return new Seating(
-                    rs.getString("seat_id"),
-                    rs.getInt("event_id"),
-                    rs.getInt("seat_number"),
-                    rs.getBoolean("is_reserved"),
-                    rs.getBoolean("is_accessible"),
-                    rs.getBoolean("is_restricted"),
-                    rs.getString("section_name")
-            );
-        });
+        // Get seats that are not reserved for the specific event
+        String sql = "SELECT * FROM seating s " +
+                "LEFT JOIN SeatEvents se ON s.seat_id = se.seat_id AND se.event_id = ? " +
+                "WHERE se.reserved = false OR se.seat_id IS NULL";
+
+        return jdbcTemplate.query(sql, new Object[]{eventId}, (rs, rowNum) -> new Seating(
+                rs.getString("seat_id"),
+                rs.getInt("room_id"),
+                rs.getInt("seat_number"),
+                rs.getBoolean("is_accessible"),
+                rs.getBoolean("is_restricted"),
+                rs.getString("section_name")
+        ));
+    }
+
+
+    public List<String> getReservedSeatsForEvent(int eventId) {
+        String sql = "SELECT seat_id FROM SeatEvents WHERE event_id = ? AND reserved = true";
+        return jdbcTemplate.query(sql, new Object[]{eventId}, (rs, rowNum) -> rs.getString("seat_id"));
+    }
+
+    // Method to fetch available seats for a specific event
+    // Save Seat-Event associations (SeatEvents table)
+    public void saveSeatEventAssociation(int eventId, List<String> seatIds) {
+        String sql = "INSERT INTO SeatEvents (seat_id, event_id) VALUES (?, ?)";
+        for (String seatId : seatIds) {
+            jdbcTemplate.update(sql, seatId, eventId);
+        }
+    }
+
+    public void updateSeatsAsReserved(List<String> seatIds, int eventId) {
+        String sql = "INSERT INTO SeatEvents (seat_id, event_id, reserved, reservation_time) VALUES (?, ?, true, NOW()) " +
+                "ON DUPLICATE KEY UPDATE reserved = true, reservation_time = NOW()";
+
+        for (String seatId : seatIds) {
+            jdbcTemplate.update(sql, seatId, eventId);
+        }
     }
 }

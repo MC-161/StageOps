@@ -5,6 +5,8 @@ import com.operations.StageOps.model.Ticket;
 import com.operations.StageOps.repository.EventRepository;
 import com.operations.StageOps.repository.SeatingRepository;
 import com.operations.StageOps.repository.TicketRepository;
+import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +21,7 @@ public class TicketService {
 
     private final TicketRepository ticketRepository;
     private final EventRepository eventRepository;
-    private final SeatingRepository seatingRepository;
+    private JdbcTemplate jdbcTemplate;
 
     /**
      * Constructor for initializing the TicketRepository, EventRepository, and SeatingRepository.
@@ -31,7 +33,7 @@ public class TicketService {
     public TicketService(TicketRepository ticketRepository, EventRepository eventRepository, SeatingRepository seatingRepository) {
         this.ticketRepository = ticketRepository;
         this.eventRepository = eventRepository;
-        this.seatingRepository = seatingRepository;
+        this.jdbcTemplate = new JdbcTemplate();
     }
 
     /**
@@ -42,32 +44,34 @@ public class TicketService {
      * @return the number of rows affected by the insert query (usually 1 if successful).
      */
     public int saveTicket(Ticket ticket) {
-        // Save the ticket (i.e., reserve a seat)
-        int result = ticketRepository.save(ticket);
+        // Get the event
+        Event event = eventRepository.getEventById(ticket.getEventId());
 
-        if (result > 0) {
-            // Get the event by ID
-            Event event = eventRepository.getEventById(ticket.getEventId());
+        // Check if the seat is already reserved for the event by checking the SeatEvents table
+        String checkSql = "SELECT COUNT(*) FROM SeatEvents WHERE event_id = ? AND seat_id = ? AND reserved = true";
+        int reservedCount = jdbcTemplate.queryForObject(checkSql, new Object[]{ticket.getEventId(), ticket.getSeatId()}, Integer.class);
 
-            // Decrease available tickets by 1
-            event.setTicketsAvailable(event.getTicketsAvailable() - 1);
-
-            // Increase tickets sold by 1
-            event.setTicketsSold(event.getTicketsSold() + 1);
-
-            // Add the ticket price to the total revenue
-            event.setTotalRevenue(event.getTotalRevenue() + ticket.getPrice());
-
-            // Update the event
-            eventRepository.update(event);
-
-            // Mark the seat as reserved
-            seatingRepository.updateSeatStatus(ticket.getSeatId(), true);
-
-            return result;
+        if (reservedCount > 0) {
+            throw new IllegalArgumentException("This seat is already reserved for this event.");
         }
 
-        return 0; // Error in ticket reservation
+        // Mark the seat as reserved for this event in the SeatEvents table
+        // Insert into SeatEvents, but if the entry already exists, do nothing
+        String insertSql = "INSERT INTO SeatEvents (seat_id, event_id, reserved, reservation_time) " +
+                "VALUES (?, ?, true, NOW()) " +
+                "ON DUPLICATE KEY UPDATE reserved = true, reservation_time = NOW()";
+
+        jdbcTemplate.update(insertSql, ticket.getSeatId(), ticket.getEventId());
+
+
+        // Update the event details (tickets sold, revenue, etc.)
+        event.setTicketsSold(event.getTicketsSold() + 1);
+        event.setTicketsAvailable(event.getTicketsAvailable() - 1);
+        event.setTotalRevenue(event.getTotalRevenue() + ticket.getPrice());
+        eventRepository.update(event);
+
+        // Save the ticket record
+        return ticketRepository.save(ticket);
     }
 
     /**

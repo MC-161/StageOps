@@ -52,7 +52,7 @@ public class SeatingService {
      * @param seatId the unique ID of the seat.
      * @return the Seating object corresponding to the given seat ID.
      */
-    public Seating getSeatById(UUID seatId) {
+    public Seating getSeatById(String seatId) {
         return seatingRepository.getSeatById(seatId);
     }
 

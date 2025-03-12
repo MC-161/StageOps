@@ -190,7 +190,6 @@ public class LayoutRepository {
                     rs.getString("seat_id"),
                     rs.getInt("room_id"),
                     rs.getInt("seat_number"),
-                    rs.getBoolean("is_reserved"),
                     rs.getBoolean("is_accessible"),
                     rs.getBoolean("is_restricted"),
                     sectionName
