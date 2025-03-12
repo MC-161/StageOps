@@ -28,7 +28,7 @@ public class Seating {
      * @param seatNumber The seat number within the room.
      * @param isAccessible Indicates whether the seat is accessible (e.g., for disabled users).
      * @param isRestricted Indicates whether the seat is restricted (e.g., VIP seating).
-     * @param sectionName The name of the section where the seat is located.
+     * @param sectionName The name of the section where the seat is located
      */
     public Seating(String seatId, int roomId, int seatNumber,boolean isAccessible, boolean isRestricted, String sectionName) {
         this.seatId = seatId;
