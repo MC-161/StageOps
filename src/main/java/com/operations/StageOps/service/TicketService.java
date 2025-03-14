@@ -40,38 +40,36 @@ public class TicketService {
      * Saves a new ticket (reserves a seat) and updates the event's available seats and revenue.
      * The ticket's reservation is recorded, and the event's details such as available tickets, tickets sold, and total revenue are updated.
      *
-     * @param ticket the Ticket object containing the details to be saved.
+     * @param tickets the Ticket object containing the details to be saved.
      * @return the number of rows affected by the insert query (usually 1 if successful).
      */
-    public int saveTicket(Ticket ticket) {
-        // Get the event
-        Event event = eventRepository.getEventById(ticket.getEventId());
+    public void saveTickets(List<Ticket> tickets) {
+        for (Ticket ticket : tickets) {
+            // Check if the seat is already reserved for the event
+            String checkSql = "SELECT COUNT(*) FROM SeatEvents WHERE event_id = ? AND seat_id = ? AND reserved = true";
+            int reservedCount = jdbcTemplate.queryForObject(checkSql, new Object[]{ticket.getEventId(), ticket.getSeatId()}, Integer.class);
 
-        // Check if the seat is already reserved for the event by checking the SeatEvents table
-        String checkSql = "SELECT COUNT(*) FROM SeatEvents WHERE event_id = ? AND seat_id = ? AND reserved = true";
-        int reservedCount = jdbcTemplate.queryForObject(checkSql, new Object[]{ticket.getEventId(), ticket.getSeatId()}, Integer.class);
+            if (reservedCount > 0) {
+                throw new IllegalArgumentException("Seat " + ticket.getSeatId() + " is already reserved for this event.");
+            }
 
-        if (reservedCount > 0) {
-            throw new IllegalArgumentException("This seat is already reserved for this event.");
+            // Mark the seat as reserved for the event in SeatEvents table
+            String insertSql = "INSERT INTO SeatEvents (seat_id, event_id, reserved, reservation_time) " +
+                    "VALUES (?, ?, true, NOW()) " +
+                    "ON DUPLICATE KEY UPDATE reserved = true, reservation_time = NOW()";
+
+            jdbcTemplate.update(insertSql, ticket.getSeatId(), ticket.getEventId());
+
+            // Update the event's ticket sales and revenue
+            Event event = eventRepository.getEventById(ticket.getEventId());
+            event.setTicketsSold(event.getTicketsSold() + 1);
+            event.setTicketsAvailable(event.getTicketsAvailable() - 1);
+            event.setTotalRevenue(event.getTotalRevenue() + ticket.getPrice());
+            eventRepository.update(event);
+
+            // Save the ticket
+            ticketRepository.save(ticket);
         }
-
-        // Mark the seat as reserved for this event in the SeatEvents table
-        // Insert into SeatEvents, but if the entry already exists, do nothing
-        String insertSql = "INSERT INTO SeatEvents (seat_id, event_id, reserved, reservation_time) " +
-                "VALUES (?, ?, true, NOW()) " +
-                "ON DUPLICATE KEY UPDATE reserved = true, reservation_time = NOW()";
-
-        jdbcTemplate.update(insertSql, ticket.getSeatId(), ticket.getEventId());
-
-
-        // Update the event details (tickets sold, revenue, etc.)
-        event.setTicketsSold(event.getTicketsSold() + 1);
-        event.setTicketsAvailable(event.getTicketsAvailable() - 1);
-        event.setTotalRevenue(event.getTotalRevenue() + ticket.getPrice());
-        eventRepository.update(event);
-
-        // Save the ticket record
-        return ticketRepository.save(ticket);
     }
 
     /**

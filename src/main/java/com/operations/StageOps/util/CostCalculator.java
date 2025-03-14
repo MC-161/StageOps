@@ -1,7 +1,7 @@
 package com.operations.StageOps.util;
 
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 public class CostCalculator {
 
@@ -13,13 +13,13 @@ public class CostCalculator {
      * @param pricePerDay The price per day for the room.
      * @return The total cost of the booking.
      */
-    public static double calculateTotalCost(Date startDate, Date endDate, double pricePerDay) {
+    public static double calculateTotalCost(LocalDate startDate, LocalDate endDate, double pricePerDay) {
         if (startDate == null || endDate == null || pricePerDay <= 0) {
             return 0;
         }
 
-        long diffInMillis = endDate.getTime() - startDate.getTime();
-        long numOfDays = TimeUnit.DAYS.convert(diffInMillis, TimeUnit.MILLISECONDS);
+        // Calculate the number of days between the start and end date
+        long numOfDays = ChronoUnit.DAYS.between(startDate, endDate);
 
         // Ensure at least 1 day is charged
         numOfDays = Math.max(numOfDays, 1);

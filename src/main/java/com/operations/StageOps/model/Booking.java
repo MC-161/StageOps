@@ -1,42 +1,42 @@
 package com.operations.StageOps.model;
 
-
 import com.operations.StageOps.util.CostCalculator;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 
 /**
- * Represents a booking in the system.
+ * This class represents a Booking made by a client for a specific room.
+ * It contains information about the booking, including booking ID, client ID,
+ * room ID, start date, end date, status of the booking, and total cost.
  */
 public class Booking {
     private int bookingId;
     private int clientId;
     private int roomId;
-    private Date startDate;
-    private Date endDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate startDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate endDate;
     private String status;
     private double totalCost;
 
-
-    /**
-     * Default constructor for Booking.
-     **/
     public Booking() {
     }
 
     /**
-     * Parametereized constructure of booking.
+     * Parameterized constructor for the Booking class.
      *
-     * @param bookingId The unique identifier for the booking.
-     * @param clientId The unique identifier for the client.
-     * @param roomId The unique identifier for the room.
-     * @param startDate The start date of the booking.
-     * @param endDate The end date of the booking.
-     * @param status The status of the booking (e.g., confirmed, pending, cancelled).
-     * @param totalCost The total cost of the booking.
+     * @param bookingId The unique ID of the booking
+     * @param clientId The ID of the client making the booking
+     * @param roomId The ID of the room being booked
+     * @param startDate The start date of the booking
+     * @param endDate The end date of the booking
+     * @param status The status of the booking (e.g., confirmed, cancelled)
+     * @param totalCost The total cost of the booking
      */
-    public Booking(int bookingId, int clientId, int roomId, Date startDate, Date endDate, String status, double totalCost) {
+    public Booking(int bookingId, int clientId, int roomId, LocalDate startDate, LocalDate endDate, String status, double totalCost) {
         this.bookingId = bookingId;
         this.clientId = clientId;
         this.roomId = roomId;
@@ -46,26 +46,25 @@ public class Booking {
         this.totalCost = totalCost;
     }
 
+
     /**
-     * Gets the booking ID.
+     * Gets the unique ID of the booking.
      *
-     * @return The booking ID.
+     * @return The booking ID
      */
     public int getBookingId() {
         return bookingId;
     }
-
     /**
      * Sets the booking ID.
      *
-     * @param bookingId The booking ID is set.
+     * @param bookingId The booking ID to set
      */
     public void setBookingId(int bookingId) {
         this.bookingId = bookingId;
     }
-
     /**
-     * Gets the client ID.
+     * Gets the client ID of the booking.
      *
      * @return The client ID
      */
@@ -76,16 +75,16 @@ public class Booking {
     /**
      * Sets the client ID.
      *
-     * @param clientId The client ID to set.
+     * @param clientId The client ID to set
      */
     public void setClientId(int clientId) {
         this.clientId = clientId;
     }
 
     /**
-     * Gets the room ID.
+     * Gets the room ID of the booking.
      *
-     * @return The room ID.
+     * @return The room ID
      */
     public int getRoomId() {
         return roomId;
@@ -94,7 +93,7 @@ public class Booking {
     /**
      * Sets the room ID.
      *
-     * @param roomId The room ID to set.
+     * @param roomId The room ID to set
      */
     public void setRoomId(int roomId) {
         this.roomId = roomId;
@@ -103,43 +102,44 @@ public class Booking {
     /**
      * Gets the start date of the booking.
      *
-     * @return The start date.
+     * @return The start date of the booking
      */
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
     /**
      * Sets the start date of the booking.
      *
-     * @param startDate The start date to set.
+     * @param startDate The start date to set
      */
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
     /**
+     * a
      * Gets the end date of the booking.
      *
-     * @return The end date.
+     * @return The end date of the booking
      */
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
     /**
      * Sets the end date of the booking.
      *
-     * @param endDate The end date to set.
+     * @param endDate The end date to set
      */
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
     /**
      * Gets the status of the booking.
      *
-     * @return The booking status.
+     * @return The status of the booking
      */
     public String getStatus() {
         return status;
@@ -148,7 +148,7 @@ public class Booking {
     /**
      * Sets the status of the booking.
      *
-     * @param status The booking status to set.
+     * @param status The status to set
      */
     public void setStatus(String status) {
         this.status = status;
@@ -157,7 +157,7 @@ public class Booking {
     /**
      * Gets the total cost of the booking.
      *
-     * @return The total cost.
+     * @return The total cost of the booking
      */
     public double getTotalCost() {
         return totalCost;
@@ -166,7 +166,7 @@ public class Booking {
     /**
      * Sets the total cost of the booking.
      *
-     * @param totalCost The total cost to set.
+     * @param totalCost The total cost to set
      */
     public void setTotalCost(double totalCost) {
         this.totalCost = totalCost;
@@ -175,4 +175,3 @@ public class Booking {
         this.totalCost = CostCalculator.calculateTotalCost(this.startDate, this.endDate, pricePerDay);
     }
 }
-// Get all seats
