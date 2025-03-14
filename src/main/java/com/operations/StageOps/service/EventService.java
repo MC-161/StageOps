@@ -166,26 +166,30 @@ public class EventService {
      * @param seatIds a list of seat IDs to be held.
      * @return a message indicating whether the seats were successfully held or not.
      */
-    public String holdSeatsForGroupBooking(int eventId, int groupSize, List<Integer> seatIds) {
+    public String holdSeatsForGroupBooking(int eventId, int groupSize, List<String> seatIds) {
+        // Ensure the group size is at least 12
         if (groupSize < 12) {
             return "Error: Group booking must be for at least 12 people.";
         }
 
-        // Check if seats are available for holding
-        List<Seating> availableSeats = seatingRepository.getAvailableSeatsForEvent(eventId);
+        // Get a list of seat IDs that are already reserved for this event
+        List<String> reservedSeatIds = seatingRepository.getReservedSeatsForEvent(eventId);
 
-        // Verify that the requested seats are available for holding
-        for (Integer seatId : seatIds) {
-            boolean isAvailable = availableSeats.stream()
-                    .anyMatch(seat -> seat.getSeatId().equals(seatId) && !seat.isReserved());
-            if (!isAvailable) {
-                return "Error: Some of the requested seats are not available.";
+        // Check if any requested seat is already reserved
+        for (String seatId : seatIds) {
+            if (reservedSeatIds.contains(seatId)) {
+                return "Error: Some of the requested seats are already reserved.";
             }
         }
 
-        // Mark the seats as reserved (held by marketing)
-        seatingRepository.updateSeatsAsReserved(seatIds);
+        // Mark the seats as reserved for this event
+        seatingRepository.updateSeatsAsReserved(seatIds, eventId);
 
         return "Seats held successfully for group booking.";
+    }
+
+
+    public List<Seating> getSeatsForEvent(int eventId) {
+        return eventRepository.getSeatsForEvent(eventId);
     }
 }

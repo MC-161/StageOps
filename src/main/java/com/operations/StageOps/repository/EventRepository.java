@@ -5,14 +5,20 @@ import com.operations.StageOps.model.LayoutConfiguration;
 import com.operations.StageOps.model.Seating;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Repository for handling CRUD operations related to events in the database.
@@ -23,6 +29,7 @@ public class EventRepository {
 
     private final JdbcTemplate jdbcTemplate;
     private final LayoutRepository layoutRepository;
+    private final SeatingRepository seatingRepository;
 
     /**
      * Constructs an instance of the EventRepository with the given JdbcTemplate.
@@ -32,6 +39,7 @@ public class EventRepository {
     public EventRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
         this.layoutRepository = new LayoutRepository(jdbcTemplate);
+        this.seatingRepository = new SeatingRepository(jdbcTemplate);
     }
 
     /**
@@ -58,22 +66,36 @@ public class EventRepository {
         String sql = "INSERT INTO events (event_name, event_date, start_time, end_time, room_id, tickets_available, tickets_sold, event_type, total_revenue, layout_id) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        int rowsAffected = jdbcTemplate.update(sql,
-                event.getEventName(),
-                event.getEventDate(),
-                java.sql.Timestamp.from(event.getStartTime().toInstant()),
-                java.sql.Timestamp.from(event.getEndTime().toInstant()),
-                event.getRoomId(),
-                event.getTicketsAvailable(),
-                event.getTicketsSold(),
-                event.getEventType(),
-                event.getTotalRevenue(),
-                event.getLayoutId());
+        // Using a generated key to retrieve the event ID
+        KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        // If the event was successfully inserted, update the room's layout_id
+        int rowsAffected = jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, event.getEventName());
+            ps.setDate(2, new java.sql.Date(event.getEventDate().getTime()));
+            ps.setTimestamp(3, java.sql.Timestamp.from(event.getStartTime().toInstant()));
+            ps.setTimestamp(4, java.sql.Timestamp.from(event.getEndTime().toInstant()));
+            ps.setInt(5, event.getRoomId());
+            ps.setInt(6, event.getTicketsAvailable());
+            ps.setInt(7, event.getTicketsSold());
+            ps.setString(8, event.getEventType());
+            ps.setDouble(9, event.getTotalRevenue());
+            ps.setInt(10, event.getLayoutId());
+            return ps;
+        }, keyHolder);
+
+        // If the event was successfully inserted, get the generated event_id
         if (rowsAffected > 0) {
+            event.setEventId(keyHolder.getKey().intValue());  // Set the eventId to the generated ID
+
+            // Associate event with the room layout
             String updateRoomSql = "UPDATE rooms SET layout_id = ? WHERE room_id = ?";
             jdbcTemplate.update(updateRoomSql, event.getLayoutId(), event.getRoomId());
+
+            // Save seat-event associations using the eventId we just inserted
+            List<Seating> seats = seatingRepository.getAllSeatsByRoom(event.getRoomId());
+            List<String> seatIds = seats.stream().map(Seating::getSeatId).collect(Collectors.toList());
+            seatingRepository.saveSeatEventAssociation(event.getEventId(), seatIds);
         }
 
         return rowsAffected;
@@ -163,22 +185,39 @@ public class EventRepository {
      * @return a list of available seating arrangements for the event.
      */
     public List<Seating> getAvailableSeatsForEvent(int eventId) {
-        String sql = "SELECT s.seat_id, s.section_name, s.seat_number, s.room_id, s.is_reserved, s.is_accessible, s.is_restricted " +
-                "FROM seating s " +
-                "LEFT JOIN tickets t ON s.seat_id = t.seat_id AND t.event_id = ? " +
-                "WHERE s.room_id = (SELECT room_id FROM events WHERE event_id = ?) " +
-                "AND (s.is_reserved = 0 OR s.is_reserved IS NULL)";
+        // Only retrieve seats that are allocated to the event and are not reserved
+        String sql = "SELECT s.* FROM seating s " +
+                "JOIN SeatEvents se ON s.seat_id = se.seat_id " +
+                "WHERE se.event_id = ? AND se.reserved = false";
 
-        return jdbcTemplate.query(sql, new Object[]{eventId, eventId}, (rs, rowNum) -> {
-            return new Seating(
+        return jdbcTemplate.query(sql, new Object[]{eventId}, (rs, rowNum) -> new Seating(
+                rs.getString("seat_id"),
+                rs.getInt("room_id"),
+                rs.getInt("seat_number"),
+                rs.getBoolean("is_accessible"),
+                rs.getBoolean("is_restricted"),
+                rs.getString("section_name")
+        ));
+    }
+
+    public List<Seating> getSeatsForEvent(int eventId) {
+        String sql = "SELECT s.*, " +
+                "CASE WHEN se.reserved = true THEN 'reserved' ELSE 'available' END AS status " +
+                "FROM seating s " +
+                "JOIN SeatEvents se ON s.seat_id = se.seat_id " +
+                "WHERE se.event_id = ?";
+
+        return jdbcTemplate.query(sql, new Object[]{eventId}, (rs, rowNum) -> {
+            Seating seat = new Seating(
                     rs.getString("seat_id"),
                     rs.getInt("room_id"),
                     rs.getInt("seat_number"),
-                    rs.getBoolean("is_reserved"),
                     rs.getBoolean("is_accessible"),
                     rs.getBoolean("is_restricted"),
                     rs.getString("section_name")
             );
+            seat.setStatus(rs.getString("status")); // Set the reserved/available status
+            return seat;
         });
     }
 

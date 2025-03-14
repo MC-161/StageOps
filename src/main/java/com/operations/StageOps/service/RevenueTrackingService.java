@@ -6,51 +6,72 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * Service class for managing RevenueTracking entities.
- * Provides methods for CRUD operations (Create, Read, and Read) on revenue tracking records.
- * The class interacts with the `RevenueTrackingRepository` to perform database operations.
- */
 @Service
 public class RevenueTrackingService {
 
     private final RevenueTrackingRepository revenueTrackingRepository;
 
-    /**
-     * Constructor for initializing the RevenueTrackingRepository.
-     *
-     * @param revenueTrackingRepository the RevenueTrackingRepository used for interacting with the database.
-     */
     public RevenueTrackingService(RevenueTrackingRepository revenueTrackingRepository) {
         this.revenueTrackingRepository = revenueTrackingRepository;
     }
 
-    /**
-     * Saves a new revenue tracking record into the database.
-     *
-     * @param revenueTracking the RevenueTracking object containing the data to be saved.
-     * @return the number of rows affected by the insert query (usually 1 if successful).
-     */
+    // Save revenue tracking record
     public int saveRevenueTracking(RevenueTracking revenueTracking) {
         return revenueTrackingRepository.save(revenueTracking);
     }
 
-    /**
-     * Retrieves all revenue tracking records from the database.
-     *
-     * @return a list of RevenueTracking objects representing all revenue tracking records.
-     */
-    public List<RevenueTracking> getAllRevenueTracking() {
-        return revenueTrackingRepository.getAllRevenueTracking();
+    // Get all revenue tracking records (entries)
+    public List<RevenueTracking> getAllRevenueTrackingEntries() {
+        return revenueTrackingRepository.getAllRevenueTrackingEntries();
     }
 
-    /**
-     * Retrieves a specific revenue tracking record by its ID.
-     *
-     * @param revenueId the ID of the revenue tracking record.
-     * @return the RevenueTracking object corresponding to the given revenue ID.
-     */
+    // Get revenue tracking by ID
     public RevenueTracking getRevenueTrackingById(int revenueId) {
         return revenueTrackingRepository.getRevenueTrackingById(revenueId);
+    }
+
+    // Get total revenue for a specific day (singular revenue)
+    public double getTotalRevenueByDate(String date) {
+        return revenueTrackingRepository.getTotalRevenueByDate(date);
+    }
+
+    // Get total revenue for a specific month and year (singular revenue)
+    public double getTotalRevenueByMonth(int month, int year) {
+        return revenueTrackingRepository.getTotalRevenueByMonth(month, year);
+    }
+
+    // Get total revenue for a specific year (singular revenue)
+    public double getTotalRevenueByYear(int year) {
+        return revenueTrackingRepository.getTotalRevenueByYear(year);
+    }
+
+    // Get revenue tracking entries by event ID
+    public List<RevenueTracking> getRevenueTrackingEntriesByEventId(int eventId) {
+        return revenueTrackingRepository.getRevenueTrackingEntriesByEventId(eventId);
+    }
+
+    // Get revenue tracking entries by booking ID
+    public List<RevenueTracking> getRevenueTrackingEntriesByBookingId(int bookingId) {
+        return revenueTrackingRepository.getRevenueTrackingEntriesByBookingId(bookingId);
+    }
+
+    // Get revenue tracking entries by day
+    public List<RevenueTracking> getRevenueTrackingEntriesByDay(String date) {
+        return revenueTrackingRepository.getRevenueTrackingEntriesByDay(date);
+    }
+
+    // Get revenue tracking entries by month and year
+    public List<RevenueTracking> getRevenueTrackingEntriesByMonth(int month, int year) {
+        return revenueTrackingRepository.getRevenueTrackingEntriesByMonth(month, year);
+    }
+
+    // Get revenue tracking entries by year
+    public List<RevenueTracking> getRevenueTrackingEntriesByYear(int year) {
+        return revenueTrackingRepository.getRevenueTrackingEntriesByYear(year);
+    }
+
+    // Get revenue tracking entries by date range
+    public List<RevenueTracking> getRevenueTrackingEntriesByDateRange(String startDate, String endDate) {
+        return revenueTrackingRepository.getRevenueTrackingEntriesByDateRange(startDate, endDate);
     }
 }

@@ -9,7 +9,6 @@ public class Seating {
     private String seatId;
     private int roomId;
     private int seatNumber;
-    private boolean isReserved;
     private boolean isAccessible;
     private boolean isRestricted;
     private String sectionName;
@@ -27,18 +26,17 @@ public class Seating {
      * @param seatId The unique identifier of the seat.
      * @param roomId The room ID where the seat is located.
      * @param seatNumber The seat number within the room.
-     * @param isReserved Indicates whether the seat is reserved (true if reserved).
      * @param isAccessible Indicates whether the seat is accessible (e.g., for disabled users).
      * @param isRestricted Indicates whether the seat is restricted (e.g., VIP seating).
-     * @param sectionName The name of the section where the seat is located.
+     * @param sectionName The name of the section where the seat is located
      */
-    public Seating(String seatId, int roomId, int seatNumber, boolean isReserved, boolean isAccessible, boolean isRestricted, String sectionName) {
+    public Seating(String seatId, int roomId, int seatNumber,boolean isAccessible, boolean isRestricted, String sectionName) {
         this.seatId = seatId;
         this.roomId = roomId;
         this.seatNumber = seatNumber;
-        this.isReserved = isReserved;
         this.isAccessible = isAccessible;
         this.isRestricted = isRestricted;
+        this.sectionName = sectionName;
     }
 
     /**
@@ -96,23 +94,6 @@ public class Seating {
     }
 
     /**
-     * Indicates whether the seat is reserved.
-     *
-     * @return true if the seat is reserved; false otherwise.
-     */
-    public boolean isReserved() {
-        return isReserved;
-    }
-
-    /**
-     * Sets whether the seat is reserved.
-     *
-     * @param reserved true if the seat is reserved; false otherwise.
-     */
-    public void setReserved(boolean reserved) {
-        isReserved = reserved;
-    }
-
     /**
      * Indicates whether the seat is accessible for disabled users.
      *

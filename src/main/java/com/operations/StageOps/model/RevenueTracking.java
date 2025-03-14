@@ -1,41 +1,27 @@
 package com.operations.StageOps.model;
 
-/**
- * Represents revenue tracking for an event, including ticket sales and venue hire.
- */
+import java.time.LocalDate;
+
 public class RevenueTracking {
     private int revenueId;
     private int roomId;
     private int eventId;
+    private int bookingId;
     private double totalRevenue;
     private double ticketSales;
     private double venueHire;
+    private LocalDate bookingDate;
+    private String status;
+    private LocalDate createdAt;
+    private LocalDate updatedAt;
 
-    /**
-     * Default constructor.
-     */
-    public RevenueTracking() {
-    }
+    // Constructors
+    public RevenueTracking() {}
+    public RevenueTracking(int revenueId, int roomId, int eventId, int bookingId, double totalRevenue,
+                           double ticketSales, double venueHire, LocalDate bookingDate, String status){}
 
-    /**
-     * Parameterized constructor to initialize revenue tracking details.
-     *
-     * @param revenueId   Unique identifier for the revenue record.
-     * @param roomId      Room associated with the revenue.
-     * @param eventId     Event associated with the revenue.
-     * @param totalRevenue Total revenue generated.
-     * @param ticketSales Revenue from ticket sales.
-     * @param venueHire   Revenue from venue hire.
-     */
-    public RevenueTracking(int revenueId, int roomId, int eventId, double totalRevenue, double ticketSales, double venueHire) {
-        this.revenueId = revenueId;
-        this.roomId = roomId;
-        this.eventId = eventId;
-        this.totalRevenue = totalRevenue;
-        this.ticketSales = ticketSales;
-        this.venueHire = venueHire;
-    }
 
+    // Getters and Setters
     public int getRevenueId() {
         return revenueId;
     }
@@ -82,5 +68,45 @@ public class RevenueTracking {
 
     public void setVenueHire(double venueHire) {
         this.venueHire = venueHire;
+    }
+
+    public int getBookingId() {
+        return bookingId;
+    }
+
+    public void setBookingId(int bookingId) {
+        this.bookingId = bookingId;
+    }
+
+    public LocalDate getBookingDate() {
+        return bookingDate;
+    }
+
+    public void setBookingDate(LocalDate bookingDate) {
+        this.bookingDate = bookingDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public LocalDate getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDate getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDate updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
