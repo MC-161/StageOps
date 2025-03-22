@@ -5,13 +5,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
 
-
 /**
- * This class represents a Booking made by a client for a specific room.
- * It contains information about the booking, including booking ID, client ID,
- * room ID, start date, end date, status of the booking, and total cost.
+ * Represents a booking made by a client for a specific room.
+ * This class contains information about the booking, including the booking ID,
+ * client ID, room ID, start and end dates, status, and total cost.
  */
 public class Booking {
+
     private int bookingId;
     private int clientId;
     private int roomId;
@@ -22,19 +22,22 @@ public class Booking {
     private String status;
     private double totalCost;
 
+    /**
+     * Default constructor for the Booking class.
+     */
     public Booking() {
     }
 
     /**
-     * Parameterized constructor for the Booking class.
+     * Parameterized constructor for creating a Booking instance.
      *
-     * @param bookingId The unique ID of the booking
-     * @param clientId The ID of the client making the booking
-     * @param roomId The ID of the room being booked
-     * @param startDate The start date of the booking
-     * @param endDate The end date of the booking
-     * @param status The status of the booking (e.g., confirmed, cancelled)
-     * @param totalCost The total cost of the booking
+     * @param bookingId  The unique ID of the booking
+     * @param clientId   The ID of the client making the booking
+     * @param roomId     The ID of the room being booked
+     * @param startDate  The start date of the booking
+     * @param endDate    The end date of the booking
+     * @param status     The status of the booking (e.g., confirmed, cancelled)
+     * @param totalCost  The total cost of the booking
      */
     public Booking(int bookingId, int clientId, int roomId, LocalDate startDate, LocalDate endDate, String status, double totalCost) {
         this.bookingId = bookingId;
@@ -46,7 +49,6 @@ public class Booking {
         this.totalCost = totalCost;
     }
 
-
     /**
      * Gets the unique ID of the booking.
      *
@@ -55,6 +57,7 @@ public class Booking {
     public int getBookingId() {
         return bookingId;
     }
+
     /**
      * Sets the booking ID.
      *
@@ -63,6 +66,7 @@ public class Booking {
     public void setBookingId(int bookingId) {
         this.bookingId = bookingId;
     }
+
     /**
      * Gets the client ID of the booking.
      *
@@ -118,7 +122,6 @@ public class Booking {
     }
 
     /**
-     * a
      * Gets the end date of the booking.
      *
      * @return The end date of the booking
@@ -171,6 +174,14 @@ public class Booking {
     public void setTotalCost(double totalCost) {
         this.totalCost = totalCost;
     }
+
+    /**
+     * Updates the total cost of the booking based on the price per day.
+     * This method calculates the total cost using the start and end dates of the booking
+     * and the price per day.
+     *
+     * @param pricePerDay The price of the room per day
+     */
     public void updateTotalCost(double pricePerDay) {
         this.totalCost = CostCalculator.calculateTotalCost(this.startDate, this.endDate, pricePerDay);
     }

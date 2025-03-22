@@ -8,54 +8,50 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/**
- * Repository class for handling CRUD operations related to layout configurations, sections, and seating in the database.
- * It provides methods to save, retrieve, update, and delete layouts and their associated sections and seats.
- */
 @Repository
 public class LayoutRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
     /**
-     * Constructor for the LayoutRepository.
+     * Constructor to initialize the LayoutRepository with JdbcTemplate.
      *
-     * @param jdbcTemplate the JdbcTemplate object used to interact with the database.
+     * @param jdbcTemplate The JdbcTemplate instance used for database operations.
      */
     public LayoutRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     /**
-     * Saves a new layout configuration along with associated sections and seats in the database.
+     * Save a new layout configuration along with its sections and associated seats.
      *
-     * @param layout the LayoutConfiguration object containing layout data, sections, and associated seats.
-     * @return the layout ID of the saved layout.
+     * @param layout The layout configuration object to be saved.
+     * @return The ID of the saved layout.
      */
     public int save(LayoutConfiguration layout) {
-        // Insert the layout data into the 'layouts' table.
+        // Insert layout data into the 'layouts' table
         String sql = "INSERT INTO layouts (layout_id, layout_name, max_capacity, room_id, layout_type) VALUES (?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, layout.getLayoutId(), layout.getLayoutName(), layout.getMaxCapacity(), layout.getRoomId(), layout.getLayoutType());
 
-        // Insert sections into the 'sections' table.
+        // Insert sections into the 'sections' table
         for (Section section : layout.getSections()) {
             String sectionSql = "INSERT INTO sections (section_name, section_type, layout_id) VALUES (?, ?, ?)";
             jdbcTemplate.update(sectionSql, section.getSectionName(), section.getSectionType(), layout.getLayoutId());
 
-            // Associate seats with sections by updating the 'seating' table with the correct section name.
+            // Associating existing seats with sections by updating the 'seating' table
             for (Seating seat : section.getSeats()) {
                 String updateSeatSql = "UPDATE seating SET section_name = ? WHERE seat_id = ?";
                 jdbcTemplate.update(updateSeatSql, seat.getSectionName(), seat.getSeatId());
             }
         }
 
-        return layout.getLayoutId(); // Return the layout ID of the saved layout.
+        return layout.getLayoutId(); // Return the layout ID
     }
 
     /**
-     * Retrieves all layouts with their associated sections from the database.
+     * Get all layouts from the database, including their sections and associated seats.
      *
-     * @return a list of all LayoutConfiguration objects, each containing associated sections.
+     * @return A list of all layout configurations.
      */
     public List<LayoutConfiguration> getAllLayouts() {
         String sql = "SELECT * FROM layouts";
@@ -68,16 +64,16 @@ public class LayoutRepository {
                     rs.getInt("room_id"),
                     rs.getString("layout_type")
             );
-            layout.setSections(findSectionsByLayoutId(layoutId)); // Fetch sections for this layout.
+            layout.setSections(findSectionsByLayoutId(layoutId)); // Fetch sections for this layout
             return layout;
         });
     }
 
     /**
-     * Retrieves a layout configuration by its ID, including associated sections.
+     * Get a specific layout by its ID, including its sections and associated seats.
      *
-     * @param layoutId the ID of the layout to be retrieved.
-     * @return the LayoutConfiguration object corresponding to the provided layout ID.
+     * @param layoutId The ID of the layout to retrieve.
+     * @return The layout configuration with its sections and seats.
      */
     public LayoutConfiguration getLayoutById(int layoutId) {
         String sql = "SELECT * FROM layouts WHERE layout_id = ?";
@@ -89,16 +85,16 @@ public class LayoutRepository {
                     rs.getInt("room_id"),
                     rs.getString("layout_type")
             );
-            layout.setSections(findSectionsByLayoutId(layoutId)); // Fetch sections for this layout.
+            layout.setSections(findSectionsByLayoutId(layoutId)); // Fetch sections for this layout
             return layout;
         });
     }
 
     /**
-     * Updates an existing layout configuration in the database along with its sections and seats.
+     * Update an existing layout configuration and its associated sections and seats.
      *
-     * @param layout the LayoutConfiguration object containing updated layout data.
-     * @return the updated LayoutConfiguration object with its sections and seats.
+     * @param layout The updated layout configuration.
+     * @return The updated layout configuration, including sections and seats.
      */
     public LayoutConfiguration update(LayoutConfiguration layout) {
         String sql = "UPDATE layouts SET layout_name = ?, max_capacity = ?, room_id = ?, layout_type = ? WHERE layout_id = ?";
@@ -114,28 +110,28 @@ public class LayoutRepository {
                             rs.getInt("room_id"),
                             rs.getString("layout_type")
                     ));
-            updatedLayout.setSections(findSectionsByLayoutId(layout.getLayoutId())); // Fetch sections for this updated layout.
+            updatedLayout.setSections(findSectionsByLayoutId(layout.getLayoutId())); // Fetch sections for the updated layout
             return updatedLayout;
         }
-        return null; // Return null if no rows were updated.
+        return null;
     }
 
     /**
-     * Deletes a layout configuration from the database by its ID.
+     * Delete a layout from the database.
      *
-     * @param layoutId the ID of the layout to be deleted.
-     * @return the number of rows affected by the delete operation.
+     * @param layoutId The ID of the layout to delete.
+     * @return The number of rows affected by the delete operation.
      */
     public int delete(int layoutId) {
         String sql = "DELETE FROM layouts WHERE layout_id = ?";
-        return jdbcTemplate.update(sql, layoutId); // Return the number of rows affected by the delete operation.
+        return jdbcTemplate.update(sql, layoutId);
     }
 
     /**
-     * Retrieves all layouts for a specific room, including associated sections.
+     * Fetch layouts for a specific room, including sections and associated seats.
      *
-     * @param roomId the ID of the room for which layouts are to be retrieved.
-     * @return a list of LayoutConfiguration objects for the specified room.
+     * @param roomId The ID of the room to fetch layouts for.
+     * @return A list of layout configurations for the specified room.
      */
     public List<LayoutConfiguration> findLayoutsByRoomId(int roomId) {
         String sql = "SELECT * FROM layouts WHERE room_id = ?";
@@ -148,16 +144,16 @@ public class LayoutRepository {
                     rs.getInt("room_id"),
                     rs.getString("layout_type")
             );
-            layout.setSections(findSectionsByLayoutId(layoutId)); // Fetch sections for this layout.
+            layout.setSections(findSectionsByLayoutId(layoutId)); // Fetch sections for this layout
             return layout;
         });
     }
 
     /**
-     * Retrieves all sections associated with a specific layout, including seats for each section.
+     * Fetch sections associated with a specific layout by its ID.
      *
-     * @param layoutId the ID of the layout for which sections are to be retrieved.
-     * @return a list of Section objects, each containing associated seating information.
+     * @param layoutId The ID of the layout to fetch sections for.
+     * @return A list of sections belonging to the layout.
      */
     private List<Section> findSectionsByLayoutId(int layoutId) {
         String sql = "SELECT * FROM sections WHERE layout_id = ?";
@@ -171,17 +167,18 @@ public class LayoutRepository {
                     layoutId
             );
 
-            // Fetch seats associated with this section and set them in the section object.
-            section.setSeats(findSeatsBySectionId(sectionName));
+            // Fetch the seats for the section
+            section.setSeats(findSeatsBySectionId(sectionName)); // Set the seats for this section
+
             return section;
         });
     }
 
     /**
-     * Retrieves all seats for a specific section.
+     * Fetch seats associated with a specific section by its name.
      *
-     * @param sectionName the name of the section for which seats are to be retrieved.
-     * @return a list of Seating objects for the specified section.
+     * @param sectionName The name of the section to fetch seats for.
+     * @return A list of seats belonging to the section.
      */
     public List<Seating> findSeatsBySectionId(String sectionName) {
         String sql = "SELECT * FROM seating WHERE section_name = ?";
@@ -194,7 +191,7 @@ public class LayoutRepository {
                     rs.getBoolean("is_restricted"),
                     sectionName
             );
-            return seat; // Return the seat object.
+            return seat;
         });
     }
 }

@@ -1,65 +1,64 @@
 package com.operations.StageOps.service;
 
+
 import com.operations.StageOps.model.Review;
 import com.operations.StageOps.repository.ReviewRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * Service class for managing Review entities.
- * Provides methods for CRUD operations (Create, Read, and Delete) on review records.
- * The class interacts with the `ReviewRepository` to perform database operations.
- */
 @Service
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
 
-    /**
-     * Constructor for initializing the ReviewRepository.
-     *
-     * @param reviewRepository the ReviewRepository used for interacting with the database.
-     */
     public ReviewService(ReviewRepository reviewRepository) {
         this.reviewRepository = reviewRepository;
     }
 
-    /**
-     * Saves a new review record into the database.
-     *
-     * @param review the Review object containing the data to be saved.
-     * @return the number of rows affected by the insert query (usually 1 if successful).
-     */
+    // Save review
     public int saveReview(Review review) {
         return reviewRepository.save(review);
     }
 
-    /**
-     * Retrieves all review records from the database.
-     *
-     * @return a list of Review objects representing all reviews.
-     */
+    // Get all reviews
     public List<Review> getAllReviews() {
         return reviewRepository.getAllReviews();
     }
 
-    /**
-     * Retrieves a specific review record by its ID.
-     *
-     * @param reviewId the ID of the review.
-     * @return the Review object corresponding to the given review ID.
-     */
+    // Get review by ID
     public Review getReviewById(int reviewId) {
         return reviewRepository.getReviewById(reviewId);
     }
 
-    /**
-     * Deletes a review record by its ID.
-     *
-     * @param reviewId the ID of the review to be deleted.
-     */
+    // Delete review by its ID
     public void deleteReview(int reviewId) {
         int rowsAffected = reviewRepository.deleteReview(reviewId);
     }
+
+    // Get reviews related to events (reviews that have event_id not null)
+    public List<Review> getEventReviews() {
+        return reviewRepository.getEventReviews();
+    }
+
+    // Get reviews related to bookings (reviews that have booking_id not null)
+    public List<Review> getBookingReviews() {
+        return reviewRepository.getBookingReviews();
+    }
+
+    // Get recent reviews (limit results)
+    public List<Review> getRecentReviews(int limit) {
+        return reviewRepository.getRecentReviews(limit);
+    }
+
+    // Get reviews by specific event ID
+    public List<Review> getReviewsByEventId(int eventId) {
+        return reviewRepository.getReviewsByEventId(eventId);
+    }
+
+    // Get reviews by specific booking ID
+    public List<Review> getReviewsByBookingId(int bookingId) {
+        return reviewRepository.getReviewsByBookingId(bookingId);
+    }
+
 }

@@ -4,7 +4,9 @@ import com.operations.StageOps.model.RevenueTracking;
 import com.operations.StageOps.repository.RevenueTrackingRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class RevenueTrackingService {
@@ -70,8 +72,42 @@ public class RevenueTrackingService {
         return revenueTrackingRepository.getRevenueTrackingEntriesByYear(year);
     }
 
+    //Get revenue tracking entries lifetime
+
+
     // Get revenue tracking entries by date range
     public List<RevenueTracking> getRevenueTrackingEntriesByDateRange(String startDate, String endDate) {
         return revenueTrackingRepository.getRevenueTrackingEntriesByDateRange(startDate, endDate);
     }
+
+    /**
+     * Get total revenue for each month of the given year.
+     *
+     * @param year the year for which monthly revenue is requested
+     * @return List of maps containing month and total revenue for each month of the year
+     */
+    public List<Map<String, Object>> getMonthlyRevenue(int year) {
+        return revenueTrackingRepository.getTotalRevenueYear(year);
+    }
+
+    /**
+     * Get total revenue for each day in the given month and year.
+     *
+     * @param month the month (1-12) for which daily revenue is requested
+     * @param year  the year for which daily revenue is requested
+     * @return List of maps containing day and total revenue for each day in the month
+     */
+    public List<Map<String, Object>> getDailyRevenue(int month, int year) {
+        return revenueTrackingRepository.getTotalRevenueByMonthAndYear(month, year);
+    }
+
+    // Get total revenue for each year lifetime
+    public List<Map<String, Object>> getLifetimeRevenueByYear() {
+        return revenueTrackingRepository.getLifetimeRevenueByYear();
+    }
+
+    public double getTotalRevenueForWeek(LocalDate startOfWeek, LocalDate endOfWeek) {
+        return revenueTrackingRepository.sumRevenueByDateBetween(startOfWeek, endOfWeek);
+    }
+
 }

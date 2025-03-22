@@ -1,21 +1,17 @@
 package com.operations.StageOps.service;
 
+
 import com.operations.StageOps.model.Event;
 import com.operations.StageOps.model.Ticket;
 import com.operations.StageOps.repository.EventRepository;
 import com.operations.StageOps.repository.SeatingRepository;
 import com.operations.StageOps.repository.TicketRepository;
-import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
-/**
- * Service class for managing Ticket entities.
- * Provides methods for CRUD operations (Create, Read, Update, Delete) on ticket records.
- * The class interacts with the TicketRepository, EventRepository, and SeatingRepository.
- */
 @Service
 public class TicketService {
 
@@ -23,26 +19,15 @@ public class TicketService {
     private final EventRepository eventRepository;
     private JdbcTemplate jdbcTemplate;
 
-    /**
-     * Constructor for initializing the TicketRepository, EventRepository, and SeatingRepository.
-     *
-     * @param ticketRepository the TicketRepository used for interacting with the database for ticket operations.
-     * @param eventRepository the EventRepository used for interacting with the database for event operations.
-     * @param seatingRepository the SeatingRepository used for interacting with the database for seating operations.
-     */
-    public TicketService(TicketRepository ticketRepository, EventRepository eventRepository, SeatingRepository seatingRepository) {
+    public TicketService(TicketRepository ticketRepository, EventRepository eventRepository, SeatingRepository seatingRepository, JdbcTemplate jdbcTemplate) {
         this.ticketRepository = ticketRepository;
         this.eventRepository = eventRepository;
-        this.jdbcTemplate = new JdbcTemplate();
+        this.jdbcTemplate = jdbcTemplate;
     }
 
-    /**
-     * Saves a new ticket (reserves a seat) and updates the event's available seats and revenue.
-     * The ticket's reservation is recorded, and the event's details such as available tickets, tickets sold, and total revenue are updated.
-     *
-     * @param tickets the Ticket object containing the details to be saved.
-     * @return the number of rows affected by the insert query (usually 1 if successful).
-     */
+    // Save a new ticket
+    // Save a new ticket (reserve a seat) and update the event's available seats and revenue
+    // Save multiple tickets (reserve multiple seats)
     public void saveTickets(List<Ticket> tickets) {
         for (Ticket ticket : tickets) {
             // Check if the seat is already reserved for the event
@@ -71,42 +56,27 @@ public class TicketService {
             ticketRepository.save(ticket);
         }
     }
+    public int getTotalTicketsSoldForWeek(LocalDate startOfWeek, LocalDate endOfWeek) {
+        return ticketRepository.countBySaleDateBetween(startOfWeek, endOfWeek);
+    }
 
-    /**
-     * Retrieves all tickets from the 'tickets' table in the database.
-     *
-     * @return a list of Ticket objects representing all tickets.
-     */
+
+    // Get all tickets
     public List<Ticket> getAllTickets() {
         return ticketRepository.getAllTickets();
     }
 
-    /**
-     * Retrieves a specific ticket by its ID.
-     *
-     * @param ticketId the ID of the ticket.
-     * @return the Ticket object corresponding to the given ticket ID.
-     */
+    // Get ticket by ID
     public Ticket getTicketById(int ticketId) {
         return ticketRepository.getTicketById(ticketId);
     }
 
-    /**
-     * Updates an existing ticket record in the 'tickets' table.
-     *
-     * @param ticket the Ticket object containing the updated data.
-     * @return the number of rows affected by the update query.
-     */
+    // Update ticket
     public int updateTicket(Ticket ticket) {
         return ticketRepository.update(ticket);
     }
 
-    /**
-     * Deletes a ticket record from the 'tickets' table based on the ticket ID.
-     *
-     * @param ticketId the ID of the ticket to be deleted.
-     * @return the number of rows affected by the delete query (usually 1 if successful).
-     */
+    // Delete ticket
     public int deleteTicket(int ticketId) {
         return ticketRepository.delete(ticketId);
     }
