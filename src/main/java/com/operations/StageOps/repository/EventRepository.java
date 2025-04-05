@@ -45,7 +45,7 @@ public class EventRepository {
      * @return The number of rows affected by the insert operation.
      * @throws IllegalArgumentException If the room is not available or the layout is invalid.
      */
-    public int save(Event event) {
+    public Event save(Event event) {
         if (!isRoomAvailableForEvent(event.getRoomId(), event.getStartTime(), event.getEndTime())) {
             throw new IllegalArgumentException("The room is not available for the selected event time.");
         }
@@ -62,8 +62,8 @@ public class EventRepository {
         }
 
         // Proceed with event creation if the layout is valid
-        String sql = "INSERT INTO events (event_name, event_date, start_time, end_time, room_id, tickets_available, tickets_sold, event_type, total_revenue, layout_id) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO events (event_name, event_date, start_time, end_time, room_id, tickets_available, tickets_sold, event_type, total_revenue, layout_id, ticket_price, max_discount, client_id) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)";
 
         // Using a generated key to retrieve the event ID
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -80,6 +80,9 @@ public class EventRepository {
             ps.setString(8, event.getEventType());
             ps.setDouble(9, event.getTotalRevenue());
             ps.setInt(10, event.getLayoutId());
+            ps.setDouble(11, event.getTicketPrice());
+            ps.setDouble(12, event.getMaxDiscount());
+            ps.setInt(13, event.getClientId());
             return ps;
         }, keyHolder);
 
@@ -88,7 +91,7 @@ public class EventRepository {
             event.setEventId(keyHolder.getKey().intValue());  // Set the eventId to the generated ID
 
             // Associate event with the room layout
-            String updateRoomSql = "UPDATE rooms SET layout_id = ? WHERE room_id = ?";
+            String updateRoomSql = "UPDATE rooms SET current_layout_id = ? WHERE room_id = ?";
             jdbcTemplate.update(updateRoomSql, event.getLayoutId(), event.getRoomId());
 
             // Save seat-event associations using the eventId we just inserted
@@ -100,7 +103,7 @@ public class EventRepository {
             updateRevenueTracking(event.getRoomId(), event.getEventId(), event.getTotalRevenue(), event.getTicketsSold(), 0);
         }
 
-        return rowsAffected;
+        return event;
     }
 
     /**
@@ -150,7 +153,7 @@ public class EventRepository {
         if (!isRoomAvailableForEvent(event.getRoomId(), event.getStartTime(), event.getEndTime())) {
             throw new IllegalArgumentException("The room is not available for the selected event time.");
         }
-        String sql = "UPDATE events SET event_name = ?, event_date = ?, start_time = ?, end_time = ?, room_id = ?, tickets_available = ?, tickets_sold = ?, event_type = ?, total_revenue = ?, layout_id = ? WHERE event_id = ?";
+        String sql = "UPDATE events SET event_name = ?, event_date = ?, start_time = ?, end_time = ?, room_id = ?, tickets_available = ?, tickets_sold = ?, event_type = ?, total_revenue = ?, layout_id = ?, ticket_price = ?, max_discount = ?, client_id = ? WHERE event_id = ?";
         int rowsAffected = jdbcTemplate.update(sql,
                 event.getEventName(),
                 event.getEventDate(),
@@ -162,7 +165,10 @@ public class EventRepository {
                 event.getEventType(),
                 event.getTotalRevenue(),
                 event.getLayoutId(),
-                event.getEventId());
+                event.getEventId(),
+                event.getTicketPrice(),
+                event.getMaxDiscount());
+
 
         if (rowsAffected > 0) {
             // Update revenue tracking for the event
@@ -322,7 +328,10 @@ public class EventRepository {
                     rs.getInt("tickets_sold"),
                     rs.getString("event_type"),
                     rs.getDouble("total_revenue"),
-                    rs.getInt("layout_id")
+                    rs.getInt("layout_id"),
+                    rs.getDouble("ticket_price"),
+                    rs.getDouble("max_discount"),
+                    rs.getInt("client_id")
             );
         }
     }

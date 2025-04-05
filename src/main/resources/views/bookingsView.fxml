@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.time.LocalDate?>
+
+<VBox xmlns="http://javafx.com/javafx/8.0.111"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.operations.StageOps.uiControllers.BookingController"
+      spacing="20"
+      stylesheets="@../styles/bookings.css">
+
+    <!-- Bookings Form -->
+    <TitledPane text="Bookings Form" expanded="true">
+        <VBox spacing="10">
+            <GridPane hgap="10" vgap="10">
+                <Label text="Client ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <ComboBox fx:id="clientComboBox" promptText="Select Client" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                <Label text="Status:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <TextField fx:id="statusField" promptText="Status" text="Approved" GridPane.columnIndex="1" GridPane.rowIndex="1" disable="true" />
+
+                <Label text="Total Cost:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                <TextField fx:id="totalCostField" promptText="Enter Total Cost" GridPane.columnIndex="3" GridPane.rowIndex="1" disable="true"/>
+
+                <Label text="Start Date:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <DatePicker fx:id="startDateField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                <!-- Start Time -->
+                <Label text="Start Time:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                    <ComboBox fx:id="startHourComboBox" promptText="Hour" />
+                    <ComboBox fx:id="startMinuteComboBox" promptText="Minute" />
+                </HBox>
+
+                <Label text="End Date:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                <DatePicker fx:id="endDateField" GridPane.columnIndex="1" GridPane.rowIndex="4" onAction="#onDateRangeSelected"/>
+
+                <!-- End Time -->
+                <Label text="End Time:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                    <ComboBox fx:id="endHourComboBox" promptText="Hour" />
+                    <ComboBox fx:id="endMinuteComboBox" promptText="Minute" />
+                </HBox>
+            </GridPane>
+
+            <!-- Dynamic Room Selection for Each Day -->
+            <VBox fx:id="roomSelectionVBox" spacing="10" />
+
+            <HBox spacing="10">
+                <Button text="Create Booking" fx:id="createBookingButton" onAction="#createBooking" styleClass="primary-button" />
+                <Button text="Calculate Total Cost" fx:id="calculateCostButton" onAction="#calculateTotalCost" />
+            </HBox>
+        </VBox>
+    </TitledPane>
+
+    <!-- Bookings List -->
+    <TitledPane text="Bookings List" expanded="true">
+        <TableView fx:id="bookingsTable" prefHeight="200">
+            <columns>
+                <TableColumn fx:id="bookingIdColumn" text="Booking ID" />
+                <TableColumn fx:id="clientIdColumn" text="Client ID" />
+                <TableColumn fx:id="startDateColumn" text="Start Date" />
+                <TableColumn fx:id="endDateColumn" text="End Date" />
+                <TableColumn fx:id="statusColumn" text="Status" />
+                <TableColumn fx:id="totalCostColumn" text="Total Cost" />
+            </columns>
+        </TableView>
+    </TitledPane>
+
+</VBox>

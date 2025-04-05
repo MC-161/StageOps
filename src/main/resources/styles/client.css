@@ -1,0 +1,131 @@
+/* Root container */
+VBox {
+    -fx-padding: 15; /* Reduced padding for overall container */
+    -fx-background-color: #F5F5F5; /* Slightly off-white background */
+}
+
+/* Modern Card Layout */
+TitledPane {
+    -fx-background-color: #FFFFFF;
+    -fx-border-radius: 8px; /* Slightly smaller border radius */
+    -fx-background-radius: 8px; /* Slightly smaller radius */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 8, 0, 2, 2); /* Slightly smaller shadow */
+    -fx-border-color: #DDDDDD;
+    -fx-padding: 10px; /* Reduced padding in the card */
+}
+
+/* Button Styling */
+.button {
+    -fx-padding: 8px 15px; /* Smaller button padding */
+    -fx-font-size: 14px;
+    -fx-text-fill: white;
+    -fx-background-color: #4CAF50; /* Green Background */
+    -fx-background-radius: 5px;
+    -fx-font-weight: bold;
+}
+
+.button:hover {
+    -fx-background-color: #45a049; /* Darker green on hover */
+    -fx-opacity: 0.9;
+}
+
+/* TableView - Modern card look */
+TableView {
+    -fx-background-color: #FFFFFF; /* White background */
+    -fx-border-color: #DDDDDD;
+    -fx-border-radius: 8px; /* Reduced radius to match card */
+    -fx-background-radius: 8px; /* Reduced radius to match card */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0, 0, 2);
+    -fx-padding: 5px; /* Reduced padding to make it more compact */
+    -fx-pref-height: 250px; /* Larger table height */
+    -fx-min-height: 200px; /* Minimum height */
+    -fx-max-height: 300px; /* Maximum height */
+}
+
+/* Table Headers */
+.table-view .column-header-background {
+    -fx-background-color: #65C915; /* Green header */
+    -fx-padding: 8px;
+}
+
+.table-view .column-header {
+    -fx-background-color: #65C915; /* Green Header */
+    -fx-text-fill: #FFFFFF; /* White text */
+    -fx-font-weight: bold;
+}
+
+/* Table Rows */
+.table-row-cell {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #EEEEEE;
+}
+
+/* Alternating Row Colors */
+.table-row-cell:odd {
+    -fx-background-color: #FAFAFA; /* Light grey for odd rows */
+}
+
+/* Hover Effect */
+.table-row-cell:hover {
+    -fx-background-color: #E8F5E9; /* Light green on hover */
+}
+
+/* Table Cells */
+.table-cell {
+    -fx-padding: 6px; /* Smaller padding in cells */
+    -fx-text-fill: #000000; /* Black text */
+}
+
+/* Client Form Input Fields */
+.text-field {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #DDDDDD;
+    -fx-border-radius: 5px;
+    -fx-padding: 8px; /* Reduced padding for input fields */
+    -fx-font-size: 14px;
+}
+
+.text-field:focused {
+    -fx-border-color: #65C915; /* Green border on focus */
+}
+
+/* Label Styling */
+.label {
+    -fx-font-size: 13px; /* Slightly smaller font size */
+    -fx-text-fill: #333333; /* Dark grey text */
+}
+
+/* HBox */
+.hbox {
+    -fx-alignment: center;
+    -fx-spacing: 8px; /* Reduced spacing for more compact layout */
+}
+
+/* VBox */
+.vbox {
+    -fx-spacing: 15px; /* Slightly reduced spacing */
+}
+
+/* Titled Pane - Client List, Contracts, and Invoice Sections */
+TitledPane {
+    -fx-background-color: #FFFFFF;
+    -fx-border-radius: 8px; /* Slightly smaller border radius */
+    -fx-background-radius: 8px; /* Slightly smaller radius */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 8, 0, 2, 2); /* Slightly smaller shadow */
+    -fx-border-color: #DDDDDD;
+    -fx-padding: 10px; /* Reduced padding in the card */
+}
+
+/* Custom Style for Descriptive Label */
+.label-info {
+    -fx-font-size: 13px; /* Smaller font for descriptions */
+    -fx-text-fill: #2196F3; /* Blue text for descriptions */
+    -fx-font-style: italic;
+}
+
+/* Modern Title Bar */
+TitledPane > .title {
+    -fx-font-weight: bold;
+    -fx-font-size: 14px; /* Smaller font size for the title */
+    -fx-text-fill: #333333; /* Dark text for titles */
+}

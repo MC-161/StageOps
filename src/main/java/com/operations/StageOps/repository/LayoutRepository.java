@@ -45,6 +45,10 @@ public class LayoutRepository {
             }
         }
 
+        // Insert into room_layouts table to associate the room with the layout
+        String roomLayoutSql = "INSERT INTO room_layouts (room_id, layout_id) VALUES (?, ?)";
+        jdbcTemplate.update(roomLayoutSql, layout.getRoomId(), layout.getLayoutId());
+
         return layout.getLayoutId(); // Return the layout ID
     }
 

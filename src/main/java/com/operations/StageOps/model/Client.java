@@ -1,37 +1,39 @@
 package com.operations.StageOps.model;
 
-/**
- * Represents a client in the system.
- * This class contains information about the client, including their client ID, name, and contact information.
- */
 public class Client {
-
     private int clientId;
     private String name;
-    private String contactInfo;
+    private String address;
+    private String email;
+    private String telephoneNumber;
 
     /**
-     * Default constructor for the Client class.
+     * Represents a client who makes bookings.
      */
-    public Client() {}
-
-    /**
-     * Parameterized constructor for creating a Client instance.
-     *
-     * @param clientId    The unique ID of the client
-     * @param name        The name of the client
-     * @param contactInfo The contact information of the client
-     */
-    public Client(int clientId, String name, String contactInfo) {
-        this.clientId = clientId;
-        this.name = name;
-        this.contactInfo = contactInfo;
+    public Client() {
     }
 
     /**
-     * Gets the unique client ID.
+     * Constructs a Client with the specified ID, name, address, email, and telephone number.
      *
-     * @return The client ID
+     * @param clientId        The unique identifier for the client.
+     * @param name            The name of the client.
+     * @param address         The address of the client.
+     * @param email           The email address of the client.
+     * @param telephoneNumber The telephone number of the client.
+     */
+    public Client(int clientId, String name, String address, String email, String telephoneNumber) {
+        this.clientId = clientId;
+        this.name = name;
+        this.address = address;
+        this.email = email;
+        this.telephoneNumber = telephoneNumber;
+    }
+
+    /**
+     * Gets the client ID.
+     *
+     * @return The unique identifier of the client.
      */
     public int getClientId() {
         return clientId;
@@ -40,7 +42,7 @@ public class Client {
     /**
      * Sets the client ID.
      *
-     * @param clientId The client ID to set
+     * @param clientId The unique identifier of the client.
      */
     public void setClientId(int clientId) {
         this.clientId = clientId;
@@ -49,7 +51,7 @@ public class Client {
     /**
      * Gets the name of the client.
      *
-     * @return The name of the client
+     * @return The name of the client.
      */
     public String getName() {
         return name;
@@ -58,27 +60,33 @@ public class Client {
     /**
      * Sets the name of the client.
      *
-     * @param name The name to set
+     * @param name The name of the client.
      */
     public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * Gets the contact information of the client.
-     *
-     * @return The contact information of the client
-     */
-    public String getContactInfo() {
-        return contactInfo;
+    public String getAddress() {
+        return address;
     }
 
-    /**
-     * Sets the contact information of the client.
-     *
-     * @param contactInfo The contact information to set
-     */
-    public void setContactInfo(String contactInfo) {
-        this.contactInfo = contactInfo;
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getTelephoneNumber() {
+        return telephoneNumber;
+    }
+
+    public void setTelephoneNumber(String telephoneNumber) {
+        this.telephoneNumber = telephoneNumber;
     }
 }

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Pos?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.operations.StageOps.uiControllers.SeatManagementController"
+      spacing="20" style="-fx-padding: 30; -fx-alignment: center; -fx-background-color: #fafafa; -fx-border-radius: 15px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.2, 0, 4);">
+
+    <!-- Title -->
+    <Label text="Seat Management" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #333333;"/>
+
+    <!-- Room Selection Dropdown -->
+    <HBox spacing="15" alignment="center">
+        <Label text="Select Room:" style="-fx-font-size: 16px; -fx-font-weight: normal; -fx-text-fill: #555555;"/>
+        <ComboBox fx:id="roomSelectionComboBox" style="-fx-font-size: 14px; -fx-padding: 8; -fx-pref-width: 200px;"/>
+    </HBox>
+
+    <!-- Placeholder Label for initial screen -->
+    <Label fx:id="placeholderLabel" text="Please select a room to begin managing seats"
+           style="-fx-font-size: 18px; -fx-font-style: italic; -fx-text-fill: #888888; -fx-padding: 20;" visible="true"/>
+
+    <!-- Seat Grid Display -->
+    <ScrollPane fx:id="seatScrollPane" minHeight="300" fitToWidth="true" vbarPolicy="ALWAYS"
+                style="-fx-background-color: transparent;">
+        <GridPane fx:id="seatGrid" hgap="15" vgap="15" alignment="center"
+                  style="-fx-background-color: #ffffff; -fx-padding: 15; -fx-border-radius: 10px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0.1, 0, 3);">
+            <!-- Example Seat Layout (You can dynamically generate more in the controller) -->
+            <ToggleButton text="💺" style="-fx-font-size: 24px; -fx-background-color: #ddd; -fx-border-radius: 10px;" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <ToggleButton text="💺" style="-fx-font-size: 24px; -fx-background-color: #ddd; -fx-border-radius: 10px;" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+            <ToggleButton text="💺" style="-fx-font-size: 24px; -fx-background-color: #ddd; -fx-border-radius: 10px;" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+        </GridPane>
+    </ScrollPane>
+
+    <!-- Action Buttons -->
+    <HBox spacing="20" alignment="center">
+        <Button fx:id="saveSeatsButton" text="Save Changes"
+                style="-fx-background-color: #4CAF50; -fx-text-fill: white;
+                       -fx-font-size: 16px; -fx-padding: 12; -fx-border-radius: 8;
+                       -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 5, 0.1, 0, 3);"/>
+    </HBox>
+
+</VBox>

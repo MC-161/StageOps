@@ -1,58 +1,48 @@
 package com.operations.StageOps.model;
 
-import com.operations.StageOps.util.CostCalculator;
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.util.List;
 
 /**
- * Represents a booking made by a client for a specific room.
- * This class contains information about the booking, including the booking ID,
- * client ID, room ID, start and end dates, status, and total cost.
+ * Represents a booking entity containing details about a reservation,
+ * including client information, booking times, status, cost, and room assignments.
  */
 public class Booking {
-
     private int bookingId;
     private int clientId;
-    private int roomId;
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate startDate;
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate endDate;
+    private ZonedDateTime startTime;
+    private ZonedDateTime endTime;
     private String status;
     private double totalCost;
+    private List<BookingRoomAssignment> roomAssignments;
+
+
 
     /**
-     * Default constructor for the Booking class.
-     */
-    public Booking() {
-    }
-
-    /**
-     * Parameterized constructor for creating a Booking instance.
+     * Constructs a Booking instance with all necessary details.
      *
-     * @param bookingId  The unique ID of the booking
-     * @param clientId   The ID of the client making the booking
-     * @param roomId     The ID of the room being booked
-     * @param startDate  The start date of the booking
-     * @param endDate    The end date of the booking
-     * @param status     The status of the booking (e.g., confirmed, cancelled)
-     * @param totalCost  The total cost of the booking
-     */
-    public Booking(int bookingId, int clientId, int roomId, LocalDate startDate, LocalDate endDate, String status, double totalCost) {
+     * @param bookingId        The unique identifier for the booking.
+     * @param clientId         The unique identifier for the client making the booking.
+     * @param startTime        The start time of the booking.
+     * @param endTime          The end time of the booking.
+     * @param status           The current status of the booking (e.g., "confirmed", "cancelled").
+     * @param totalCost        The total cost associated with the booking.
+     * @param roomAssignments  The list of room assignments associated with the booking.
+     */// Constructor that matches the parameters used in the JDBC query
+    public Booking(int bookingId, int clientId, ZonedDateTime startTime, ZonedDateTime endTime, String status, double totalCost, List<BookingRoomAssignment> roomAssignments) {
         this.bookingId = bookingId;
         this.clientId = clientId;
-        this.roomId = roomId;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.status = status;
         this.totalCost = totalCost;
+        this.roomAssignments = roomAssignments;
     }
 
     /**
-     * Gets the unique ID of the booking.
+     * Gets the booking ID.
      *
-     * @return The booking ID
+     * @return The unique identifier of the booking.
      */
     public int getBookingId() {
         return bookingId;
@@ -61,16 +51,16 @@ public class Booking {
     /**
      * Sets the booking ID.
      *
-     * @param bookingId The booking ID to set
+     * @param bookingId The unique identifier of the booking.
      */
     public void setBookingId(int bookingId) {
         this.bookingId = bookingId;
     }
 
     /**
-     * Gets the client ID of the booking.
+     * Gets the client ID.
      *
-     * @return The client ID
+     * @return The unique identifier of the client making the booking.
      */
     public int getClientId() {
         return clientId;
@@ -79,70 +69,55 @@ public class Booking {
     /**
      * Sets the client ID.
      *
-     * @param clientId The client ID to set
+     * @param clientId The unique identifier of the client making the booking.
      */
     public void setClientId(int clientId) {
         this.clientId = clientId;
     }
 
+
     /**
-     * Gets the room ID of the booking.
+     * Gets the start time of the booking.
      *
-     * @return The room ID
+     * @return The start time of the booking.
      */
-    public int getRoomId() {
-        return roomId;
+    public ZonedDateTime getStartTime() {
+        return startTime;
+    }
+
+
+    /**
+     * Sets the start time of the booking.
+     *
+     * @param startTime The start time of the booking.
+     */
+    public void setStartTime(ZonedDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+
+    /**
+     * Gets the end time of the booking.
+     *
+     * @return The end time of the booking.
+     */
+    public ZonedDateTime getEndTime() {
+        return endTime;
     }
 
     /**
-     * Sets the room ID.
+     * Sets the end time of the booking.
      *
-     * @param roomId The room ID to set
+     * @param endTime The end time of the booking.
      */
-    public void setRoomId(int roomId) {
-        this.roomId = roomId;
-    }
-
-    /**
-     * Gets the start date of the booking.
-     *
-     * @return The start date of the booking
-     */
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    /**
-     * Sets the start date of the booking.
-     *
-     * @param startDate The start date to set
-     */
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    /**
-     * Gets the end date of the booking.
-     *
-     * @return The end date of the booking
-     */
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    /**
-     * Sets the end date of the booking.
-     *
-     * @param endDate The end date to set
-     */
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
+    public void setEndTime(ZonedDateTime endTime) {
+        this.endTime = endTime;
     }
 
     /**
      * Gets the status of the booking.
      *
-     * @return The status of the booking
+     * @return The status of the booking.
      */
     public String getStatus() {
         return status;
@@ -151,7 +126,7 @@ public class Booking {
     /**
      * Sets the status of the booking.
      *
-     * @param status The status to set
+     * @param status The status of the booking.
      */
     public void setStatus(String status) {
         this.status = status;
@@ -160,7 +135,7 @@ public class Booking {
     /**
      * Gets the total cost of the booking.
      *
-     * @return The total cost of the booking
+     * @return The total cost of the booking.
      */
     public double getTotalCost() {
         return totalCost;
@@ -169,20 +144,27 @@ public class Booking {
     /**
      * Sets the total cost of the booking.
      *
-     * @param totalCost The total cost to set
+     * @param totalCost The total cost of the booking.
      */
     public void setTotalCost(double totalCost) {
         this.totalCost = totalCost;
     }
 
     /**
-     * Updates the total cost of the booking based on the price per day.
-     * This method calculates the total cost using the start and end dates of the booking
-     * and the price per day.
+     * Gets the list of room assignments associated with the booking.
      *
-     * @param pricePerDay The price of the room per day
+     * @return The list of room assignments associated with the booking.
      */
-    public void updateTotalCost(double pricePerDay) {
-        this.totalCost = CostCalculator.calculateTotalCost(this.startDate, this.endDate, pricePerDay);
+    public List<BookingRoomAssignment> getRoomAssignments() {
+        return roomAssignments;
+    }
+
+    /**
+     * Sets the list of room assignments associated with the booking.
+     *
+     * @param roomAssignments The list of room assignments associated with the booking.
+     */
+    public void setRoomAssignments(List<BookingRoomAssignment> roomAssignments) {
+        this.roomAssignments = roomAssignments;
     }
 }

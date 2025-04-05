@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.collections.*?>
+<?import java.lang.String?>
+
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.operations.StageOps.uiControllers.RevenueDashboardController"
+            stylesheets="@../styles/revenue.css">
+
+    <!-- Header Section -->
+    <top>
+        <Label text="Revenue Dashboard" styleClass="header-label"/>
+    </top>
+
+    <!-- Main Content -->
+    <center>
+        <VBox spacing="20" styleClass="main-container">
+
+            <!-- Time Period Selection -->
+            <ComboBox fx:id="timePeriodComboBox" prefWidth="180" styleClass="combo-box">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Monthly"/>
+                        <String fx:value="Daily"/>
+                        <String fx:value="Yearly"/>
+                    </FXCollections>
+                </items>
+            </ComboBox>
+
+            <!-- Charts Section -->
+            <HBox spacing="20" styleClass="chart-container">
+                <!-- Monthly Revenue Chart -->
+                <BarChart fx:id="barChart" title="Revenue" styleClass="chart-card">
+                    <xAxis>
+                        <CategoryAxis label="Month"/>
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis label="Revenue"/>
+                    </yAxis>
+                </BarChart>
+
+                <!-- Revenue Breakdown Pie Chart -->
+                <PieChart fx:id="pieChart" title="Revenue Breakdown" styleClass="chart-card"/>
+            </HBox>
+
+            <!-- Revenue Table -->
+            <TableView fx:id="revenueTable" styleClass="table-card">
+                <columns>
+                    <TableColumn text="Revenue ID" fx:id="colRevenueId"/>
+                    <TableColumn text="Room ID" fx:id="colRoomId"/>
+                    <TableColumn text="Event ID" fx:id="colEventId"/>
+                    <TableColumn text="Booking ID" fx:id="colBookingId"/>
+                    <TableColumn text="Total Revenue" fx:id="colTotalRevenue"/>
+                    <TableColumn text="Ticket Sales" fx:id="colTicketSales"/>
+                    <TableColumn text="Venue Hire" fx:id="colVenueHire"/>
+                    <TableColumn text="Booking Date" fx:id="colBookingDate"/>
+                    <TableColumn text="Status" fx:id="colStatus"/>
+                </columns>
+            </TableView>
+
+            <!-- Report Generation Button -->
+            <Button text="Generate Report" fx:id="btnGenerateReport" styleClass="primary-button"/>
+        </VBox>
+    </center>
+</BorderPane>

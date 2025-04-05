@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<VBox xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.operations.StageOps.uiControllers.EventManagementController" spacing="20" style="-fx-padding: 20; -fx-background-color: #f8f8f8;">
+
+    <!-- Event Form -->
+    <TitledPane text="Schedule Event" expanded="true">
+        <VBox spacing="10">
+            <GridPane hgap="10" vgap="10">
+                <!-- Client ID -->
+                <Label text="Client ID:" GridPane.columnIndex="4" GridPane.rowIndex="0" />
+                <ComboBox fx:id="clientComboBox" promptText="Select Client" GridPane.columnIndex="5" GridPane.rowIndex="0" />
+
+                <!-- Event Name -->
+                <Label text="Event Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <TextField fx:id="eventNameField" promptText="Enter Event Name" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                <!-- Date -->
+                <Label text="Date:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                <DatePicker fx:id="eventDateField" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+
+                <!-- Room ID ComboBox -->
+                <Label text="Room ID:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <ComboBox fx:id="roomIdComboBox" promptText="Select Room" GridPane.columnIndex="1" GridPane.rowIndex="1" onAction="#handleRoomSelection">
+                    <!-- Items will be populated via API -->
+                </ComboBox>
+
+                <!-- Tickets Available -->
+                <Label text="Tickets Available:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                <TextField fx:id="ticketsAvailableField" promptText="Enter Ticket Count" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+
+                <!-- Tickets Sold (set to 0 and greyed out) -->
+                <Label text="Tickets Sold:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <TextField fx:id="ticketsSoldField" promptText="Tickets Sold" GridPane.columnIndex="1" GridPane.rowIndex="2" editable="false" style="-fx-background-color: #d3d3d3;" text="0" />
+
+                <!-- Event Type -->
+                <Label text="Event Type:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                <TextField fx:id="eventTypeField" promptText="Enter Event Type" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+
+                <!-- Total Revenue (set to 0 and greyed out) -->
+                <Label text="Total Revenue:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                <TextField fx:id="totalRevenueField" promptText="Enter Total Revenue" GridPane.columnIndex="1" GridPane.rowIndex="3" editable="false" style="-fx-background-color: #d3d3d3;" text="0" />
+
+                <!-- Start Time -->
+                <Label text="Start Time:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                <DatePicker fx:id="startDatePicker" promptText="Select Date" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <ComboBox fx:id="startTimeComboBox" promptText="Select Time" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="00:00" />
+                            <String fx:value="01:00" />
+                            <String fx:value="02:00" />
+                            <String fx:value="03:00" />
+                            <String fx:value="04:00" />
+                            <String fx:value="05:00" />
+                            <String fx:value="06:00" />
+                            <String fx:value="07:00" />
+                            <String fx:value="08:00" />
+                            <String fx:value="09:00" />
+                            <String fx:value="10:00" />
+                            <String fx:value="11:00" />
+                            <String fx:value="12:00" />
+                            <String fx:value="13:00" />
+                            <String fx:value="14:00" />
+                            <String fx:value="15:00" />
+                            <String fx:value="16:00" />
+                            <String fx:value="17:00" />
+                            <String fx:value="18:00" />
+                            <String fx:value="19:00" />
+                            <String fx:value="20:00" />
+                            <String fx:value="21:00" />
+                            <String fx:value="22:00" />
+                            <String fx:value="23:00" />
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+
+                <!-- End Time -->
+                <Label text="End Time:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                <DatePicker fx:id="endDatePicker" promptText="Select Date" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                <ComboBox fx:id="endTimeComboBox" promptText="Select Time" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="00:00" />
+                            <String fx:value="01:00" />
+                            <String fx:value="02:00" />
+                            <String fx:value="03:00" />
+                            <String fx:value="04:00" />
+                            <String fx:value="05:00" />
+                            <String fx:value="06:00" />
+                            <String fx:value="07:00" />
+                            <String fx:value="08:00" />
+                            <String fx:value="09:00" />
+                            <String fx:value="10:00" />
+                            <String fx:value="11:00" />
+                            <String fx:value="12:00" />
+                            <String fx:value="13:00" />
+                            <String fx:value="14:00" />
+                            <String fx:value="15:00" />
+                            <String fx:value="16:00" />
+                            <String fx:value="17:00" />
+                            <String fx:value="18:00" />
+                            <String fx:value="19:00" />
+                            <String fx:value="20:00" />
+                            <String fx:value="21:00" />
+                            <String fx:value="22:00" />
+                            <String fx:value="23:00" />
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+
+                <!-- Layout ID ComboBox -->
+                <Label text="Layout ID:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                <ComboBox fx:id="layoutIdComboBox" promptText="Select Layout" GridPane.columnIndex="1" GridPane.rowIndex="6" onAction="#handleLayoutSelection">
+                    <!-- Items will be populated via API -->
+                </ComboBox>
+
+                <!---Ticket Price-->
+                <Label text="Ticket Price:" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                <TextField fx:id="ticketPriceField" promptText="Enter Ticket Price" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+
+                <!-- Max Discount -->
+                <Label text="Max Discount (%):" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                <TextField fx:id="maxDiscountField" promptText="Enter Max Discount" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            </GridPane>
+
+            <HBox spacing="10">
+                <Button text="Schedule Event" fx:id="scheduleEventButton" onAction="#scheduleEvent" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" />
+            </HBox>
+        </VBox>
+    </TitledPane>
+
+    <!-- Events List -->
+    <TitledPane text="Events List" expanded="true">
+        <TableView fx:id="eventsTable" prefHeight="200">
+            <columns>
+                <TableColumn fx:id="clientIdColumn" text="Client ID" />
+                <TableColumn fx:id="eventIdColumn" text="Event ID" />
+                <TableColumn fx:id="eventNameColumn" text="Event Name" />
+                <TableColumn fx:id="eventDateColumn" text="Date" />
+                <TableColumn fx:id="roomIdColumn" text="Room ID" />
+                <TableColumn fx:id="ticketsAvailableColumn" text="Tickets Available" />
+                <TableColumn fx:id="ticketsSoldColumn" text="Tickets Sold" />
+                <TableColumn fx:id="eventTypeColumn" text="Event Type" />
+                <TableColumn fx:id="totalRevenueColumn" text="Revenue" />
+                <TableColumn fx:id="startTimeColumn" text="Start Time" />
+                <TableColumn fx:id="endTimeColumn" text="End Time" />
+                <TableColumn fx:id="layoutIdColumn" text="Layout ID" />
+                <TableColumn fx:id="ticketPriceColumn" text="Ticket Price" />
+                <TableColumn fx:id="maxDiscountColumn" text="Max Discount" />
+            </columns>
+        </TableView>
+    </TitledPane>
+
+</VBox>

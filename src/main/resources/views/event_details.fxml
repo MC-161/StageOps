@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.operations.StageOps.uiControllers.EventDetailsController"
+      spacing="20" style="-fx-padding: 30; -fx-alignment: center; -fx-background-color: #f4f4f4; -fx-border-radius: 15px;">
+
+    <!-- Event Info Card -->
+    <VBox style="-fx-background-color: #FFFFFF; -fx-border-radius: 12px; -fx-padding: 20;
+                 -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 6, 0, 0, 4);" spacing="6">
+        <Label fx:id="nameLabel" style="-fx-font-weight: bold; -fx-font-family: 'Sansation'; -fx-font-size: 26px; -fx-text-fill: #222;"/>
+        <Label fx:id="dateLabel" style="-fx-font-family: 'Sansation'; -fx-font-size: 18px;"/>
+        <Label fx:id="startLabel" style="-fx-font-family: 'Sansation'; -fx-font-size: 18px;"/>
+        <Label fx:id="endLabel" style="-fx-font-family: 'Sansation'; -fx-font-size: 18px;"/>
+        <Label fx:id="roomLabel" style="-fx-font-family: 'Sansation'; -fx-font-size: 18px;"/>
+        <Label fx:id="layoutLabel" style="-fx-font-family: 'Sansation'; -fx-font-size: 18px;"/>
+    </VBox>
+
+    <!-- Ticket Status Card -->
+    <VBox style="-fx-background-color: #FFFFFF; -fx-border-radius: 12px; -fx-padding: 20;
+                 -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 6, 0, 0, 4);" spacing="6" alignment="center">
+        <Label fx:id="ticketsAvailableLabel" style="-fx-font-family: 'Sansation'; -fx-font-size: 18px;"/>
+        <Label fx:id="ticketsSoldLabel" style="-fx-font-family: 'Sansation'; -fx-font-size: 18px;"/>
+        <Label fx:id="eventTypeLabel" style="-fx-font-family: 'Sansation'; -fx-font-size: 18px;"/>
+        <Label fx:id="revenueLabel" style="-fx-font-family: 'Sansation'; -fx-font-size: 18px;"/>
+    </VBox>
+
+    <!-- Room Layout Info Card -->
+    <VBox style="-fx-background-color: #FFFFFF; -fx-border-radius: 12px; -fx-padding: 20;
+                 -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 6, 0, 0, 4);" spacing="6">
+        <Label fx:id="roomLayoutInfo" style="-fx-font-family: 'Sansation'; -fx-font-size: 18px;"/>
+    </VBox>
+
+    <!-- Scrollable Seat Grid -->
+    <ScrollPane fx:id="seatScrollPane" minHeight="200" fitToWidth="true" vbarPolicy="ALWAYS" style="-fx-background-color: transparent;">
+        <GridPane fx:id="seatGrid" hgap="12" vgap="12" alignment="center"
+                  style="-fx-background-color: #e8e8e8; -fx-padding: 10; -fx-border-radius: 10px;"/>
+    </ScrollPane>
+
+    <!-- Close Button -->
+    <HBox spacing="15" alignment="center" style="-fx-padding: 15;">
+        <Button fx:id="closeButton" text="Close"
+                style="-fx-background-color: #F44336; -fx-text-fill: white;
+                       -fx-font-family: 'Sansation'; -fx-font-size: 15px; -fx-padding: 14;
+                       -fx-border-radius: 8; -fx-font-weight: bold;
+                       -fx-effect: dropshadow(three-pass-box, #333, 6, 0, 0, 3);"/>
+    </HBox>
+
+</VBox>

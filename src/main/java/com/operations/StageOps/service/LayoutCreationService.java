@@ -12,6 +12,11 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Service class responsible for generating and saving room layouts, including seating arrangements.
+ * Supports various room types (e.g., theatre, presentation, boardroom) and creates sections based on room type.
+ */
 @Service
 public class LayoutCreationService {
 
@@ -19,6 +24,13 @@ public class LayoutCreationService {
     private final SeatingRepository seatingRepository;
     private final JdbcTemplate jdbcTemplate;
 
+    /**
+     * Constructor for LayoutCreationService.
+     *
+     * @param jdbcTemplate    The JdbcTemplate used for database interaction.
+     * @param layoutRepository The repository for managing layout configurations.
+     * @param seatingRepository The repository for managing seating arrangements.
+     */
     @Autowired
     public LayoutCreationService(JdbcTemplate jdbcTemplate, LayoutRepository layoutRepository, SeatingRepository seatingRepository) {
         this.jdbcTemplate = jdbcTemplate;
@@ -35,11 +47,11 @@ public class LayoutCreationService {
         List<Seating> seats = seatingRepository.findByRoomId(roomId);  // Assuming there's a method to fetch seats by room ID
 
         // Step 2: Generate sections from existing seats (based on some predefined logic or distribution)
-        List<Section> sections = createSectionsForRoom(roomId, "theatre", seats);
+        List<Section> sections = createSectionsForRoom(roomId, "presentation", seats);
 
         // Step 3: Create layout configuration
         LayoutConfiguration layout = new LayoutConfiguration(
-                3, "small_hall_film", seats.size(), roomId, "film");
+                2, "presentation" + roomId, seats.size(), roomId, "presentation");
         layout.setSections(sections);
 
         // Step 4: Save the layout configuration
@@ -69,7 +81,19 @@ public class LayoutCreationService {
                 break;
             case "meeting":
                 sectionCount = 4;  // Assume 4 clusters
-                sectionType = "Cluster";
+                sectionType = "Table";
+                break;
+            case "presentation":
+                sectionCount = 2;  // Assume 2 sections for presentation
+                sectionType = "Table";
+                break;
+            case "Boardroom":
+                sectionCount = 1;  // Assume 1 section for boardroom
+                sectionType = "Table";
+                break;
+            case "classroom":
+                sectionCount = 5;  // Assume 5 sections for classroom
+                sectionType = "Table";
                 break;
             default:
                 throw new IllegalArgumentException("Unknown room type: " + roomType);

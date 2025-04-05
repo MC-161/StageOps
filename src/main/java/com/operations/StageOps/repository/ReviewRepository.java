@@ -41,7 +41,7 @@ public class ReviewRepository {
         }
 
         // If client exists, proceed with inserting the review
-        String sql = "INSERT INTO reviews (client_id, event_id, booking_id, rating, review_text, review_date) " +
+        String sql = "INSERT INTO review (client_id, event_id, booking_id, rating, review_text, review_date) " +
                 "VALUES (?, ?, ?, ?, ?, NOW())";
 
         // Use null for event_id and booking_id if they are set to 0
@@ -60,7 +60,7 @@ public class ReviewRepository {
      * @return a list of all Review objects
      */
     public List<Review> getAllReviews() {
-        String sql = "SELECT * FROM reviews";
+        String sql = "SELECT * FROM review";
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             Review review = new Review();
             review.setReviewId(rs.getInt("review_id"));
@@ -81,7 +81,7 @@ public class ReviewRepository {
      * @return the Review object with the specified ID
      */
     public Review getReviewById(int reviewId) {
-        String sql = "SELECT * FROM reviews WHERE review_id = ?";
+        String sql = "SELECT * FROM review WHERE review_id = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{reviewId}, (rs, rowNum) -> {
             Review review = new Review();
             review.setReviewId(rs.getInt("review_id"));
@@ -102,7 +102,7 @@ public class ReviewRepository {
      * @return the number of rows affected in the database
      */
     public int deleteReview(int reviewId) {
-        String sql = "DELETE FROM reviews WHERE review_id = ?";
+        String sql = "DELETE FROM review WHERE review_id = ?";
         return jdbcTemplate.update(sql, reviewId);  // Returns the number of affected rows
     }
 
@@ -112,7 +112,7 @@ public class ReviewRepository {
      * @return a list of reviews related to events
      */
     public List<Review> getEventReviews() {
-        String sql = "SELECT * FROM reviews WHERE event_id IS NOT NULL";
+        String sql = "SELECT * FROM review WHERE event_id IS NOT NULL";
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             Review review = new Review();
             review.setReviewId(rs.getInt("review_id"));
@@ -132,7 +132,7 @@ public class ReviewRepository {
      * @return a list of reviews related to bookings
      */
     public List<Review> getBookingReviews() {
-        String sql = "SELECT * FROM reviews WHERE booking_id IS NOT NULL";
+        String sql = "SELECT * FROM review WHERE booking_id IS NOT NULL";
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             Review review = new Review();
             review.setReviewId(rs.getInt("review_id"));
@@ -153,7 +153,7 @@ public class ReviewRepository {
      * @return a list of recent reviews
      */
     public List<Review> getRecentReviews(int limit) {
-        String sql = "SELECT * FROM reviews ORDER BY review_date DESC LIMIT ?";
+        String sql = "SELECT * FROM review ORDER BY review_date DESC LIMIT ?";
         return jdbcTemplate.query(sql, new Object[]{limit}, (rs, rowNum) -> {
             Review review = new Review();
             review.setReviewId(rs.getInt("review_id"));
@@ -174,7 +174,7 @@ public class ReviewRepository {
      * @return a list of reviews for the specified event
      */
     public List<Review> getReviewsByEventId(int eventId) {
-        String sql = "SELECT * FROM reviews WHERE event_id = ?";
+        String sql = "SELECT * FROM review WHERE event_id = ?";
         return jdbcTemplate.query(sql, new Object[]{eventId}, (rs, rowNum) -> {
             Review review = new Review();
             review.setReviewId(rs.getInt("review_id"));
@@ -195,7 +195,7 @@ public class ReviewRepository {
      * @return a list of reviews for the specified booking
      */
     public List<Review> getReviewsByBookingId(int bookingId) {
-        String sql = "SELECT * FROM reviews WHERE booking_id = ?";
+        String sql = "SELECT * FROM review WHERE booking_id = ?";
         return jdbcTemplate.query(sql, new Object[]{bookingId}, (rs, rowNum) -> {
             Review review = new Review();
             review.setReviewId(rs.getInt("review_id"));

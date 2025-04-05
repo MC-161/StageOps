@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Pos?>
+
+<VBox xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.operations.StageOps.uiControllers.ClientManagementController" spacing="20"  stylesheets="@../styles/client.css">
+
+    <!-- Client Form -->
+    <TitledPane text="Client Creation" expanded="false">
+        <VBox spacing="10">
+            <GridPane hgap="10" vgap="10">
+                <Label text="Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <TextField fx:id="nameField" promptText="Enter Client's Name" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                <Label text="Address:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <TextField fx:id="addressField" promptText="Enter Client's Address" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <TextField fx:id="emailField" promptText="Enter Client's Email" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                <Label text="Telephone Number:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                <TextField fx:id="telephoneField" promptText="Enter Client's Telephone Number" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            </GridPane>
+
+            <HBox spacing="10" alignment="center">
+                <Button text="Add Client" fx:id="addClientButton" onAction="#handleAddClient" styleClass="button" />
+            </HBox>
+        </VBox>
+    </TitledPane>
+
+    <!-- Clients List -->
+    <TitledPane text="Client List" expanded="true">
+        <VBox spacing="10">
+            <TableView fx:id="clientsTable" prefHeight="200" styleClass="table-view">
+                <columns>
+                    <TableColumn fx:id="clientIdColumn" text="Client ID" />
+                    <TableColumn fx:id="nameColumn" text="Name" />
+                    <TableColumn fx:id="addressColumn" text="Address" />
+                    <TableColumn fx:id="emailColumn" text="Email" />
+                    <TableColumn fx:id="telephoneColumn" text="Telephone Number" />
+                </columns>
+            </TableView>
+
+            <Label text="Select a client from the list above to view their invoices and contracts." style="-fx-font-style: italic; -fx-text-fill: #757575;" />
+        </VBox>
+    </TitledPane>
+
+    <!-- Contract Section -->
+    <TitledPane text="Contract Management" expanded="false">
+        <VBox spacing="10">
+            <Label text="Select a client to view contracts" style="-fx-font-size: 14px; -fx-text-fill: #2196F3;" />
+
+            <!-- Contract Table -->
+            <TableView fx:id="contractsTable" prefHeight="200" styleClass="table-view">
+                <columns>
+                    <TableColumn fx:id="contractIdColumn" text="Contract ID" />
+                    <TableColumn fx:id="contractClientIdColumn" text="Client ID" />
+                    <TableColumn fx:id="contractStatusColumn" text="Status" />
+                    <TableColumn fx:id="contractEventIdColumn" text="Event ID" />
+                    <TableColumn fx:id="contractVenueAddressColumn" text="Venue Address" />
+                </columns>
+            </TableView>
+
+            <!-- Generate PDF Button for selected contract -->
+            <HBox spacing="10" alignment="center_right">
+                <Button fx:id="generateSelectedContractButton" text="Generate PDF for Selected Contract" onAction="#handleGenerateSelectedContract" styleClass="button" />
+            </HBox>
+        </VBox>
+    </TitledPane>
+
+    <!-- Invoice Section -->
+    <TitledPane text="Invoice Management" expanded="false">
+        <VBox spacing="10">
+            <Label text="Select a client to view invoices" style="-fx-font-size: 14px; -fx-text-fill: #2196F3;" />
+
+            <!-- Invoice Table -->
+            <TableView fx:id="invoicesTable" prefHeight="200" styleClass="table-view">
+                <columns>
+                    <TableColumn fx:id="invoiceIdColumn" text="Invoice ID"/>
+                    <TableColumn fx:id="invoiceClientIdColumn" text="Client ID"/>
+                    <TableColumn fx:id="invoiceStatusColumn" text="Status"/>
+                </columns>
+            </TableView>
+
+            <!-- Generate PDF Button for selected invoice -->
+            <HBox spacing="10" alignment="center_right">
+                <Button fx:id="generateSelectedInvoiceButton" text="Generate PDF for Selected Invoice" onAction="#handleGenerateSelectedInvoice" styleClass="button" />
+            </HBox>
+        </VBox>
+    </TitledPane>
+
+</VBox>

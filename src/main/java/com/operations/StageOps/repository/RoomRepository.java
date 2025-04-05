@@ -1,6 +1,5 @@
 package com.operations.StageOps.repository;
 
-import com.operations.StageOps.model.LayoutConfiguration;
 import com.operations.StageOps.model.Room;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -37,66 +36,131 @@ public class RoomRepository {
      * @return the number of rows affected in the database
      */
     public int save(Room room) {
-        String sql = "INSERT INTO rooms (room_name, capacity, room_type, location, layout_id) VALUES (?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, room.getRoomName(), room.getCapacity(), room.getRoomType(), room.getLocation(), room.getLayoutConfiguration().getLayoutId());
+        // Insert the room details into the rooms table including rates
+        String sql = "INSERT INTO rooms (room_name, capacity, room_type, location, current_layout_id, " +
+                "hourly_rate, evening_rate, daily_rate, weekly_rate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        int rows = jdbcTemplate.update(sql, room.getRoomName(), room.getCapacity(), room.getRoomType(),
+                room.getLocation(), room.getCurrentLayoutId(), room.getHourlyRate(), room.getEveningRate(),
+                room.getDailyRate(), room.getWeeklyRate());
+
+        if (rows > 0) {
+            // Retrieve the generated room ID
+            int roomId = jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
+
+            // Insert multiple layout IDs into the room_layouts table
+            String layoutSql = "INSERT INTO room_layouts (room_id, layout_id) VALUES (?, ?)";
+            for (Integer layoutId : room.getLayoutIds()) {
+                jdbcTemplate.update(layoutSql, roomId, layoutId);  // Insert each layoutId for the room
+            }
+
+            return rows;  // Successfully inserted room and layouts
+        } else {
+            return 0;  // Failed to insert room
+        }
     }
 
     /**
-     * Retrieves a room by its ID, including the layout configuration.
+     * Retrieves a room by its ID, including the layout configuration and room rates.
      *
      * @param roomId the ID of the room to be retrieved
-     * @return the Room object with the specified ID, including layout configuration
+     * @return the Room object with the specified ID, including layout configuration and rates
      */
     public Room getRoomById(int roomId) {
         String sql = "SELECT * FROM rooms WHERE room_id = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{roomId}, (rs, rowNum) -> {
-            Room room = new Room();
-            room.setRoomId(rs.getInt("room_id"));
-            room.setRoomName(rs.getString("room_name"));
-            room.setCapacity(rs.getInt("capacity"));
-            room.setRoomType(rs.getString("room_type"));
-            room.setLocation(rs.getString("location"));
-            int layoutId = rs.getInt("layout_id");
-            room.setLayoutConfiguration(new LayoutConfiguration(layoutId, "", 0, roomId, ""));  // Assuming LayoutConfig is fetched in a separate query
-            return room;
+        Room room = jdbcTemplate.queryForObject(sql, new Object[]{roomId}, (rs, rowNum) -> {
+            Room r = new Room();
+            r.setRoomId(rs.getInt("room_id"));
+            r.setRoomName(rs.getString("room_name"));
+            r.setCapacity(rs.getInt("capacity"));
+            r.setRoomType(rs.getString("room_type"));
+            r.setLocation(rs.getString("location"));
+            r.setCurrentLayoutId(rs.getInt("current_layout_id"));
+
+            // Set room rates from the result set
+            r.setHourlyRate(rs.getDouble("hourly_rate"));
+            r.setEveningRate(rs.getDouble("evening_rate"));
+            r.setDailyRate(rs.getDouble("daily_rate"));
+            r.setWeeklyRate(rs.getDouble("weekly_rate"));
+
+            return r;
         });
+
+        // Fetch the associated layout IDs for the room
+        String layoutSql = "SELECT layout_id FROM room_layouts WHERE room_id = ?";
+        List<Integer> layoutIds = jdbcTemplate.queryForList(layoutSql, new Object[]{roomId}, Integer.class);
+        room.setLayoutIds(layoutIds);
+
+        return room;
     }
 
     /**
-     * Retrieves all rooms from the database.
+     * Retrieves all rooms from the database, including rates and layout configurations.
      *
      * @return a list of all Room objects
      */
     public List<Room> getAllRooms() {
         String sql = "SELECT * FROM rooms";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+        List<Room> rooms = jdbcTemplate.query(sql, (rs, rowNum) -> {
             Room room = new Room();
             room.setRoomId(rs.getInt("room_id"));
             room.setRoomName(rs.getString("room_name"));
             room.setCapacity(rs.getInt("capacity"));
             room.setRoomType(rs.getString("room_type"));
             room.setLocation(rs.getString("location"));
-            int layoutId = rs.getInt("layout_id");
-            room.setLayoutConfiguration(new LayoutConfiguration(layoutId, "", 0, room.getRoomId(), ""));
+            room.setCurrentLayoutId(rs.getInt("current_layout_id"));
+
+            // Set room rates from the result set
+            room.setHourlyRate(rs.getDouble("hourly_rate"));
+            room.setEveningRate(rs.getDouble("evening_rate"));
+            room.setDailyRate(rs.getDouble("daily_rate"));
+            room.setWeeklyRate(rs.getDouble("weekly_rate"));
+
             return room;
         });
+
+        // Fetch layout IDs for each room and set them
+        for (Room room : rooms) {
+            String layoutSql = "SELECT layout_id FROM room_layouts WHERE room_id = ?";
+            List<Integer> layoutIds = jdbcTemplate.queryForList(layoutSql, new Object[]{room.getRoomId()}, Integer.class);
+            room.setLayoutIds(layoutIds);
+        }
+
+        return rooms;
     }
 
     /**
-     * Updates the details of an existing room in the database.
+     * Updates the details of an existing room in the database, including room rates.
      *
      * @param room the Room object containing updated room details
      * @return the number of rows affected in the database
      */
     public int updateRoom(Room room) {
-        String sql = "UPDATE rooms SET room_name = ?, capacity = ?, room_type = ?, location = ?, layout_id = ? WHERE room_id = ?";
-        return jdbcTemplate.update(sql,
+        // Update the room details in the rooms table including rates
+        String sql = "UPDATE rooms SET room_name = ?, capacity = ?, room_type = ?, location = ?, current_layout_id = ?, " +
+                "hourly_rate = ?, evening_rate = ?, daily_rate = ?, weekly_rate = ?, vat_rate = ? WHERE room_id = ?";
+        int rows = jdbcTemplate.update(sql,
                 room.getRoomName(),
                 room.getCapacity(),
                 room.getRoomType(),
                 room.getLocation(),
-                room.getLayoutConfiguration().getLayoutId(),  // Assuming layout configuration is linked to room
+                room.getCurrentLayoutId(),
+                room.getHourlyRate(),
+                room.getEveningRate(),
+                room.getDailyRate(),
+                room.getWeeklyRate(),
                 room.getRoomId());
+
+        // Delete the current layout associations
+        String deleteLayoutsSql = "DELETE FROM room_layouts WHERE room_id = ?";
+        jdbcTemplate.update(deleteLayoutsSql, room.getRoomId());
+
+        // Insert the new layout IDs into the room_layouts table
+        String layoutSql = "INSERT INTO room_layouts (room_id, layout_id) VALUES (?, ?)";
+        for (Integer layoutId : room.getLayoutIds()) {
+            jdbcTemplate.update(layoutSql, room.getRoomId(), layoutId);
+        }
+
+        return rows;
     }
 
     /**
@@ -106,6 +170,11 @@ public class RoomRepository {
      * @return the number of rows affected in the database
      */
     public int deleteRoom(int roomId) {
+        // First, delete the layout associations for this room
+        String deleteLayoutsSql = "DELETE FROM room_layouts WHERE room_id = ?";
+        jdbcTemplate.update(deleteLayoutsSql, roomId);
+
+        // Then delete the room itself
         String sql = "DELETE FROM rooms WHERE room_id = ?";
         return jdbcTemplate.update(sql, roomId);
     }
@@ -121,24 +190,38 @@ public class RoomRepository {
      * @return true if the room is available, false otherwise
      */
     public boolean isRoomAvailableForTimePeriod(int roomId, LocalDate startDate, LocalDate endDate, ZonedDateTime eventStartTime, ZonedDateTime eventEndTime) {
-        // Check availability for bookings
-        String bookingSql = "SELECT COUNT(*) FROM bookings WHERE room_id = ? AND (start_date < ? AND end_date > ?)";
+        // Convert LocalDate to java.sql.Date for comparison with booking date fields
         Date sqlStartDate = Date.valueOf(startDate);
         Date sqlEndDate = Date.valueOf(endDate);
 
-        int bookingCount = jdbcTemplate.queryForObject(bookingSql, new Object[]{roomId, sqlEndDate, sqlStartDate}, Integer.class);
-
-        // Check availability for events
-        String eventSql = "SELECT COUNT(*) FROM events WHERE room_id = ? AND (event_date = ? AND (start_time < ? AND end_time > ?))";
-        Date sqlEventDate = Date.valueOf(startDate);
+        // Convert ZonedDateTime to Timestamp for SQL compatibility
         Timestamp sqlEventStartTime = Timestamp.from(eventStartTime.toInstant());
         Timestamp sqlEventEndTime = Timestamp.from(eventEndTime.toInstant());
 
-        int eventCount = jdbcTemplate.queryForObject(eventSql, new Object[]{roomId, sqlEventDate, sqlEventEndTime, sqlEventStartTime}, Integer.class);
+        // Check availability for bookings by referencing the booking_room_assignments table
+        String bookingRoomAssignmentsSql = "SELECT COUNT(*) FROM booking_room_assignments WHERE room_id = ? " +
+                "AND ((date BETWEEN ? AND ?) OR " +
+                "(date = ? AND ? <= ?))";
+
+        // Query the database to check if any room assignments overlap with the requested time period
+        int bookingCount = jdbcTemplate.queryForObject(bookingRoomAssignmentsSql, new Object[]{
+                roomId, sqlStartDate, sqlEndDate, sqlStartDate, sqlEventStartTime, sqlEventEndTime
+        }, Integer.class);
+
+        // Check availability for events (if there's an event that overlaps with the room booking time)
+        String eventSql = "SELECT COUNT(*) FROM events WHERE room_id = ? AND " +
+                "(event_date = ? AND (start_time < ? AND end_time > ?))";
+        Date sqlEventDate = Date.valueOf(startDate);
+        Timestamp sqlEventStart = Timestamp.from(eventStartTime.toInstant());
+        Timestamp sqlEventEnd = Timestamp.from(eventEndTime.toInstant());
+
+        // Query the database to check if there are any conflicting events
+        int eventCount = jdbcTemplate.queryForObject(eventSql, new Object[]{roomId, sqlEventDate, sqlEventStart, sqlEventEnd}, Integer.class);
 
         // If either bookings or events exist that overlap, return false; otherwise, return true
         return bookingCount == 0 && eventCount == 0;
     }
+
 
     /**
      * Retrieves a list of available rooms for a given time period.

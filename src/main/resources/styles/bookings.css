@@ -1,0 +1,61 @@
+/* Root container */
+VBox {
+    -fx-padding: 20;
+    -fx-background-color: #F5F5F5; /* Slightly off-white background */
+}
+
+/* Modern Card Layout */
+TitledPane {
+    -fx-background-color: #FFFFFF;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 2, 2);
+    -fx-border-color: #DDDDDD;
+    -fx-padding: 15px;
+}
+
+
+/* TableView - Modern card look */
+TableView {
+    -fx-background-color: #FFFFFF; /* White background */
+    -fx-border-color: #DDDDDD;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0, 0, 2);
+    -fx-padding: 10px;
+    -fx-pref-height: 250px; /* Ensures proper height */
+}
+
+/* Table Headers */
+.table-view .column-header-background {
+    -fx-background-color: #65C915; /* Green header */
+    -fx-padding: 10px;
+}
+
+.table-view .column-header {
+    -fx-background-color: #65C915; /* Green Header */
+    -fx-text-fill: #FFFFFF; /* White text */
+    -fx-font-weight: bold;
+}
+
+/* Table Rows */
+.table-row-cell {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #EEEEEE;
+}
+
+/* Alternating Row Colors */
+.table-row-cell:odd {
+    -fx-background-color: #FAFAFA;
+}
+
+/* Hover Effect */
+.table-row-cell:hover {
+    -fx-background-color: #E8F5E9; /* Light green on hover */
+}
+
+/* Table Cells */
+.table-cell {
+    -fx-padding: 10px;
+    -fx-text-fill: #000000; /* Black text */
+}
