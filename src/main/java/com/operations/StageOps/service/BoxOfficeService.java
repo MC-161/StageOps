@@ -4,12 +4,15 @@ import com.operations.StageOps.Interfaces.IBoxOfficeService;
 import com.operations.StageOps.model.*;
 import com.operations.StageOps.repository.*;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.List;
 
+
+@Service
 public class BoxOfficeService implements IBoxOfficeService {
     private final SeatingRepository seatingRepository;
     private JdbcTemplate jdbcTemplate;
@@ -18,8 +21,9 @@ public class BoxOfficeService implements IBoxOfficeService {
     private LayoutRepository layoutRepository;
     private BookingRepository bookingRepository;
     private ContractRepository contractRepository;
+    private RoomRepository roomRepository;
 
-    public BoxOfficeService(TicketRepository ticketRepository, EventRepository eventRepository, SeatingRepository seatingRepository, JdbcTemplate jdbcTemplate, BookingRepository bookingRepository, LayoutRepository layoutRepository, ContractRepository contractRepository) {
+    public BoxOfficeService(TicketRepository ticketRepository, EventRepository eventRepository, SeatingRepository seatingRepository, JdbcTemplate jdbcTemplate, BookingRepository bookingRepository, LayoutRepository layoutRepository, ContractRepository contractRepository, RoomRepository roomRepository) {
         this.jdbcTemplate = jdbcTemplate;
         this.eventRepository = eventRepository;
         this.ticketRepository = ticketRepository;
@@ -27,6 +31,7 @@ public class BoxOfficeService implements IBoxOfficeService {
         this.layoutRepository = layoutRepository;
         this.seatingRepository = seatingRepository;
         this.contractRepository = contractRepository;
+        this.roomRepository = roomRepository;
     }
 
     // Implement the methods from IBoxOfficeService interface here
@@ -236,6 +241,33 @@ public class BoxOfficeService implements IBoxOfficeService {
     @Override
     public List<Seating> getSeatsForEvent(int eventId) {
         return eventRepository.getSeatsForEvent(eventId);
+    }
+
+    /**
+     * Check if a room is available for a specific time period.
+     *
+     * @param roomId The ID of the room to check.
+     * @param startDate The start date of the time period.
+     * @param endDate The end date of the time period.
+     * @param eventStartTime The start time of the event.
+     * @param eventEndTime The end time of the event.
+     * @return True if the room is available, false otherwise.
+     */
+    public boolean isRoomAvailableForTimePeriod(int roomId, LocalDate startDate, LocalDate endDate, ZonedDateTime eventStartTime, ZonedDateTime eventEndTime) {
+        return roomRepository.isRoomAvailableForTimePeriod(roomId, startDate, endDate, eventStartTime, eventEndTime);
+    }
+
+    /**
+     * Get a list of available rooms for a specific time period.
+     *
+     * @param startDate The start date of the time period.
+     * @param endDate The end date of the time period.
+     * @param eventStartTime The start time of the event.
+     * @param eventEndTime The end time of the event.
+     * @return A list of available room IDs.
+     */
+    public List<Integer> getAvailableRooms(LocalDate startDate, LocalDate endDate, ZonedDateTime eventStartTime, ZonedDateTime eventEndTime) {
+        return roomRepository.getAvailableRooms(startDate, endDate, eventStartTime, eventEndTime);
     }
 
 }

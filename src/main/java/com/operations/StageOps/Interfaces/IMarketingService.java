@@ -4,6 +4,7 @@ import com.operations.StageOps.model.Booking;
 import com.operations.StageOps.model.Event;
 
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 public interface IMarketingService {
@@ -22,4 +23,7 @@ public interface IMarketingService {
     Event updateEvent(int eventId, Event updatedEvent);
 
     int deleteEvent(int eventId);
+
+    boolean isRoomAvailableForTimePeriod(int roomId, LocalDate startDate, LocalDate endDate, ZonedDateTime eventStartTime, ZonedDateTime eventEndTime);
+    List<Integer> getAvailableRooms(LocalDate startDate, LocalDate endDate, ZonedDateTime eventStartTime, ZonedDateTime eventEndTime);
 }

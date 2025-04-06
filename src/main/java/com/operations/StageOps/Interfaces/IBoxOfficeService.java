@@ -4,6 +4,7 @@ package com.operations.StageOps.Interfaces;
 import com.operations.StageOps.model.*;
 
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 public interface IBoxOfficeService  {
@@ -30,4 +31,7 @@ public interface IBoxOfficeService  {
     // Seating
     List<Seating> getAvailableSeats(int eventId);
     List<Seating> getSeatsForEvent(int eventId);
+
+    boolean isRoomAvailableForTimePeriod(int roomId, LocalDate startDate, LocalDate endDate, ZonedDateTime eventStartTime, ZonedDateTime eventEndTime);
+    List<Integer> getAvailableRooms(LocalDate startDate, LocalDate endDate, ZonedDateTime eventStartTime, ZonedDateTime eventEndTime);
 }

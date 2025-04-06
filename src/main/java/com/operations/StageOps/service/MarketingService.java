@@ -4,10 +4,8 @@ import com.operations.StageOps.Interfaces.IMarketingService;
 import com.operations.StageOps.model.Booking;
 import com.operations.StageOps.model.Contract;
 import com.operations.StageOps.model.Event;
-import com.operations.StageOps.repository.BookingRepository;
-import com.operations.StageOps.repository.ContractRepository;
-import com.operations.StageOps.repository.EventRepository;
-import com.operations.StageOps.repository.SeatingRepository;
+import com.operations.StageOps.repository.*;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -15,19 +13,22 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 
+@Service
 public class MarketingService  implements IMarketingService {
 
     private final EventRepository eventRepository;
     private final SeatingRepository seatingRepository;
     private final BookingRepository bookingRepository;
     private ContractRepository contractRepository;
+    private final RoomRepository roomRepository;
 
 
-    public MarketingService(EventRepository eventRepository, SeatingRepository seatingRepository, BookingRepository bookingRepository, ContractRepository contractRepository) {
+    public MarketingService(EventRepository eventRepository, SeatingRepository seatingRepository, BookingRepository bookingRepository, ContractRepository contractRepository, RoomRepository roomRepository) {
         this.eventRepository = eventRepository;
         this.seatingRepository = seatingRepository;
         this.bookingRepository = bookingRepository;
         this.contractRepository = contractRepository;
+        this.roomRepository = roomRepository;
     }
 
     /**
@@ -212,5 +213,32 @@ public class MarketingService  implements IMarketingService {
     @Override
     public int deleteEvent(int eventId) {
         return eventRepository.delete(eventId);
+    }
+
+    /**
+     * Check if a room is available for a specific time period.
+     *
+     * @param roomId The ID of the room to check.
+     * @param startDate The start date of the time period.
+     * @param endDate The end date of the time period.
+     * @param eventStartTime The start time of the event.
+     * @param eventEndTime The end time of the event.
+     * @return True if the room is available, false otherwise.
+     */
+    public boolean isRoomAvailableForTimePeriod(int roomId, LocalDate startDate, LocalDate endDate, ZonedDateTime eventStartTime, ZonedDateTime eventEndTime) {
+        return roomRepository.isRoomAvailableForTimePeriod(roomId, startDate, endDate, eventStartTime, eventEndTime);
+    }
+
+    /**
+     * Get a list of available rooms for a specific time period.
+     *
+     * @param startDate The start date of the time period.
+     * @param endDate The end date of the time period.
+     * @param eventStartTime The start time of the event.
+     * @param eventEndTime The end time of the event.
+     * @return A list of available room IDs.
+     */
+    public List<Integer> getAvailableRooms(LocalDate startDate, LocalDate endDate, ZonedDateTime eventStartTime, ZonedDateTime eventEndTime) {
+        return roomRepository.getAvailableRooms(startDate, endDate, eventStartTime, eventEndTime);
     }
 }

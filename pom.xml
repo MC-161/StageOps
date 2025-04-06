@@ -83,6 +83,7 @@
 			<groupId>com.calendarfx</groupId>
 			<artifactId>calendar</artifactId>
 			<version>11.12.7</version>
+			<type>pom</type>
 		</dependency>
 		<!--	Java 8 Date/time	-->
 		<dependency>
@@ -122,6 +123,11 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -139,6 +145,105 @@
 					<mainClass>com.operations.StageOps.StageOpsApplication</mainClass>
 				</configuration>
 			</plugin>
+
+
+			<!--BoxOffice API JAR Plugin-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.2.2</version>
+				<executions>
+					<execution>
+						<id>interface-service-jar</id>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<classifier>boxoffice-api</classifier>
+							<includes>
+								<!-- Specific classes -->
+								<include>com/example/operations/stageOps/Interfaces/IBoxOfficeService.class</include>
+								<include>com/example/operations/stageOps/service/BoxOfficeService.class</include>
+								<include>com/example/operations/stageOps/config/DataSourceConfig.class</include>
+
+								<!-- Repositories and Models -->
+								<include>com/example/operations/stageOps/repository/EventRepository.class</include>
+								<include>com/example/operations/stageOps/repository/TicketRepository.class</include>
+								<include>com/example/operations/stageOps/repository/LayoutRepository.class</include>
+								<include>com/example/operations/stageOps/repository/BookingRepository.class</include>
+								<include>com/example/operations/stageOps/repository/ContractRepository.class</include>
+								<include>com/example/operations/stageOps/repository/SeatingRepository.class</include>
+								<include>com/example/operations/stageOps/repository/RoomRepository.class</include>
+								<include>com/example/operations/stageOps/model/**</include>
+
+
+								<!--Nested classes -->
+								<include>com/example/operations/stageOps/repository/EventRepository$EventRowMapper.class</include>
+								<include>com/example/operations/stageOps/repository/ContractRepository$ContractRowMapper.class</include>
+							</includes>
+							<excludes>
+								<!-- Everything else excluded -->
+								<exclude>com/example/operations/stageOps/SimpleUiController.java</exclude>
+							</excludes>
+							<archive>
+								<manifest>
+									<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+								</manifest>
+							</archive>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+
+			<!--Marketing API JAR Plugin-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.2.2</version>
+				<executions>
+					<execution>
+						<id>interface-service-jar</id>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<classifier>Marketing-api</classifier>
+							<includes>
+								<!-- Specific classes -->
+								<include>com/example/operations/stageOps/Interfaces/IMarketingService.class</include>
+								<include>com/example/operations/stageOps/service/MarketingService.class</include>
+								<include>com/example/operations/stageOps/config/DataSourceConfig.class</include>
+
+								<!-- Repositories and Models -->
+								<include>com/example/operations/stageOps/repository/EventRepository.class</include>
+								<include>com/example/operations/stageOps/repository/BookingRepository.class</include>
+								<include>com/example/operations/stageOps/repository/ContractRepository.class</include>
+								<include>com/example/operations/stageOps/repository/SeatingRepository.class</include>
+								<include>com/example/operations/stageOps/model/**</include>
+
+
+								<!--Nested classes -->
+								<include>com/example/operations/stageOps/repository/EventRepository$EventRowMapper.class</include>
+								<include>com/example/operations/stageOps/repository/ContractRepository$ContractRowMapper.class</include>
+							</includes>
+							<excludes>
+								<!-- Everything else excluded -->
+								<exclude>com/example/operations/stageOps/SimpleUiController.java</exclude>
+							</excludes>
+							<archive>
+								<manifest>
+									<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+								</manifest>
+							</archive>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+
 		</plugins>
 	</build>
 
