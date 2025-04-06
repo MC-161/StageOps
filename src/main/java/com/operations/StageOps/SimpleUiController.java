@@ -408,7 +408,7 @@ public class SimpleUiController {
     }
     private void loadClientManagement() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ClientManagement.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/clientManagement.fxml"));
             loader.setClassLoader(getClass().getClassLoader());
             contentArea.getChildren().add(loader.load());
         } catch (IOException e) {

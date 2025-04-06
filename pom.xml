@@ -12,7 +12,7 @@
 	<artifactId>StageOps</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>StageOps</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Operations Software for Lancaster Music Hall</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -131,6 +131,24 @@
 	</dependencies>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*.fxml</include>
+					<include>**/*.css</include>
+					<include>**/*.properties</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.fxml</include>
+					<include>**/*.css</include>
+					<include>**/*.properties</include>
+				</includes>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -147,101 +165,102 @@
 			</plugin>
 
 
-			<!--BoxOffice API JAR Plugin-->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.2.2</version>
-				<executions>
-					<execution>
-						<id>interface-service-jar</id>
-						<phase>package</phase>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-						<configuration>
-							<classifier>boxoffice-api</classifier>
-							<includes>
-								<!-- Specific classes -->
-								<include>com/example/operations/stageOps/Interfaces/IBoxOfficeService.class</include>
-								<include>com/example/operations/stageOps/service/BoxOfficeService.class</include>
-								<include>com/example/operations/stageOps/config/DataSourceConfig.class</include>
 
-								<!-- Repositories and Models -->
-								<include>com/example/operations/stageOps/repository/EventRepository.class</include>
-								<include>com/example/operations/stageOps/repository/TicketRepository.class</include>
-								<include>com/example/operations/stageOps/repository/LayoutRepository.class</include>
-								<include>com/example/operations/stageOps/repository/BookingRepository.class</include>
-								<include>com/example/operations/stageOps/repository/ContractRepository.class</include>
-								<include>com/example/operations/stageOps/repository/SeatingRepository.class</include>
-								<include>com/example/operations/stageOps/repository/RoomRepository.class</include>
-								<include>com/example/operations/stageOps/model/**</include>
+<!--			&lt;!&ndash;BoxOffice API JAR Plugin&ndash;&gt;-->
+<!--			<plugin>-->
+<!--				<groupId>org.apache.maven.plugins</groupId>-->
+<!--				<artifactId>maven-jar-plugin</artifactId>-->
+<!--				<version>3.2.2</version>-->
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<id>interface-service-jar</id>-->
+<!--						<phase>package</phase>-->
+<!--						<goals>-->
+<!--							<goal>jar</goal>-->
+<!--						</goals>-->
+<!--						<configuration>-->
+<!--							<classifier>boxoffice-api</classifier>-->
+<!--							<includes>-->
+<!--								&lt;!&ndash; Specific classes &ndash;&gt;-->
+<!--								<include>com/example/operations/stageOps/Interfaces/IBoxOfficeService.class</include>-->
+<!--								<include>com/example/operations/stageOps/service/BoxOfficeService.class</include>-->
+<!--								<include>com/example/operations/stageOps/config/DataSourceConfig.class</include>-->
 
-
-								<!--Nested classes -->
-								<include>com/example/operations/stageOps/repository/EventRepository$EventRowMapper.class</include>
-								<include>com/example/operations/stageOps/repository/ContractRepository$ContractRowMapper.class</include>
-							</includes>
-							<excludes>
-								<!-- Everything else excluded -->
-								<exclude>com/example/operations/stageOps/SimpleUiController.java</exclude>
-							</excludes>
-							<archive>
-								<manifest>
-									<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-								</manifest>
-							</archive>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+<!--								&lt;!&ndash; Repositories and Models &ndash;&gt;-->
+<!--								<include>com/example/operations/stageOps/repository/EventRepository.class</include>-->
+<!--								<include>com/example/operations/stageOps/repository/TicketRepository.class</include>-->
+<!--								<include>com/example/operations/stageOps/repository/LayoutRepository.class</include>-->
+<!--								<include>com/example/operations/stageOps/repository/BookingRepository.class</include>-->
+<!--								<include>com/example/operations/stageOps/repository/ContractRepository.class</include>-->
+<!--								<include>com/example/operations/stageOps/repository/SeatingRepository.class</include>-->
+<!--								<include>com/example/operations/stageOps/repository/RoomRepository.class</include>-->
+<!--								<include>com/example/operations/stageOps/model/**</include>-->
 
 
-			<!--Marketing API JAR Plugin-->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.2.2</version>
-				<executions>
-					<execution>
-						<id>interface-service-jar</id>
-						<phase>package</phase>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-						<configuration>
-							<classifier>Marketing-api</classifier>
-							<includes>
-								<!-- Specific classes -->
-								<include>com/example/operations/stageOps/Interfaces/IMarketingService.class</include>
-								<include>com/example/operations/stageOps/service/MarketingService.class</include>
-								<include>com/example/operations/stageOps/config/DataSourceConfig.class</include>
-
-								<!-- Repositories and Models -->
-								<include>com/example/operations/stageOps/repository/EventRepository.class</include>
-								<include>com/example/operations/stageOps/repository/BookingRepository.class</include>
-								<include>com/example/operations/stageOps/repository/ContractRepository.class</include>
-								<include>com/example/operations/stageOps/repository/SeatingRepository.class</include>
-								<include>com/example/operations/stageOps/model/**</include>
+<!--								&lt;!&ndash;Nested classes &ndash;&gt;-->
+<!--								<include>com/example/operations/stageOps/repository/EventRepository$EventRowMapper.class</include>-->
+<!--								<include>com/example/operations/stageOps/repository/ContractRepository$ContractRowMapper.class</include>-->
+<!--							</includes>-->
+<!--							<excludes>-->
+<!--								&lt;!&ndash; Everything else excluded &ndash;&gt;-->
+<!--								<exclude>com/example/operations/stageOps/SimpleUiController.java</exclude>-->
+<!--							</excludes>-->
+<!--							<archive>-->
+<!--								<manifest>-->
+<!--									<addDefaultImplementationEntries>true</addDefaultImplementationEntries>-->
+<!--								</manifest>-->
+<!--							</archive>-->
+<!--						</configuration>-->
+<!--					</execution>-->
+<!--				</executions>-->
+<!--			</plugin>-->
 
 
-								<!--Nested classes -->
-								<include>com/example/operations/stageOps/repository/EventRepository$EventRowMapper.class</include>
-								<include>com/example/operations/stageOps/repository/ContractRepository$ContractRowMapper.class</include>
-							</includes>
-							<excludes>
-								<!-- Everything else excluded -->
-								<exclude>com/example/operations/stageOps/SimpleUiController.java</exclude>
-							</excludes>
-							<archive>
-								<manifest>
-									<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-								</manifest>
-							</archive>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+<!--			&lt;!&ndash;Marketing API JAR Plugin&ndash;&gt;-->
+<!--			<plugin>-->
+<!--				<groupId>org.apache.maven.plugins</groupId>-->
+<!--				<artifactId>maven-jar-plugin</artifactId>-->
+<!--				<version>3.2.2</version>-->
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<id>interface-service-jar</id>-->
+<!--						<phase>package</phase>-->
+<!--						<goals>-->
+<!--							<goal>jar</goal>-->
+<!--						</goals>-->
+<!--						<configuration>-->
+<!--							<classifier>Marketing-api</classifier>-->
+<!--							<includes>-->
+<!--								&lt;!&ndash; Specific classes &ndash;&gt;-->
+<!--								<include>com/example/operations/stageOps/Interfaces/IMarketingService.class</include>-->
+<!--								<include>com/example/operations/stageOps/service/MarketingService.class</include>-->
+<!--								<include>com/example/operations/stageOps/config/DataSourceConfig.class</include>-->
+
+<!--								&lt;!&ndash; Repositories and Models &ndash;&gt;-->
+<!--								<include>com/example/operations/stageOps/repository/EventRepository.class</include>-->
+<!--								<include>com/example/operations/stageOps/repository/BookingRepository.class</include>-->
+<!--								<include>com/example/operations/stageOps/repository/ContractRepository.class</include>-->
+<!--								<include>com/example/operations/stageOps/repository/SeatingRepository.class</include>-->
+<!--								<include>com/example/operations/stageOps/model/**</include>-->
+
+
+<!--								&lt;!&ndash;Nested classes &ndash;&gt;-->
+<!--								<include>com/example/operations/stageOps/repository/EventRepository$EventRowMapper.class</include>-->
+<!--								<include>com/example/operations/stageOps/repository/ContractRepository$ContractRowMapper.class</include>-->
+<!--							</includes>-->
+<!--							<excludes>-->
+<!--								&lt;!&ndash; Everything else excluded &ndash;&gt;-->
+<!--								<exclude>com/example/operations/stageOps/SimpleUiController.java</exclude>-->
+<!--							</excludes>-->
+<!--							<archive>-->
+<!--								<manifest>-->
+<!--									<addDefaultImplementationEntries>true</addDefaultImplementationEntries>-->
+<!--								</manifest>-->
+<!--							</archive>-->
+<!--						</configuration>-->
+<!--					</execution>-->
+<!--				</executions>-->
+<!--			</plugin>-->
 
 
 		</plugins>
