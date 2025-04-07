@@ -39,6 +39,10 @@ public class Booking {
         this.roomAssignments = roomAssignments;
     }
 
+    public Booking() {
+
+    }
+
     /**
      * Gets the booking ID.
      *
