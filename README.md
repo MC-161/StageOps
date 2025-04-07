@@ -127,11 +127,6 @@ Before you begin, ensure you have the following installed:
      java -jar StageOps.jar
      ```
 
-5. **Access the Application**  
-   Once the application is running, you can access the StageOps platform via your web browser at:
-   ```url
-   http://localhost:8080
-   ```
 
 ### Troubleshooting
 - Ensure that your Java version is compatible (Java 8 or higher).
