@@ -1,3 +1,4 @@
+
 # StageOps - Venue Operations Software - README
 
 Welcome to **StageOps**! This software has been designed to streamline the management of your venue, enabling you to efficiently handle events, bookings, sales, revenue, and client interactions, all from a user-friendly interface.
@@ -60,6 +61,7 @@ nagement Screenshot](path/to/bookings-management-screenshot.png)
 <img width="1402" alt="Screenshot 2025-04-07 at 22 27 11" src="https://github.com/user-attachments/assets/408912aa-c384-4ea5-bed8-d8a479511006" />
 
 
+
 ## How to Use
 
 ### Getting Started
@@ -83,9 +85,7 @@ nagement Screenshot](path/to/bookings-management-screenshot.png)
 - **Ease of Use**: User-friendly interface designed for quick access and easy navigation.
 - **Comprehensive Management**: From client profiles to room availability and event scheduling, everything you need is at your fingertips.
 
-  Sure! Here's the raw markdown for the **Installation and Running** section, formatted as requested:
 
-```markdown
 ## Installation and Running
 
 ### Prerequisites
@@ -131,9 +131,8 @@ Before you begin, ensure you have the following installed:
 ### Troubleshooting
 - Ensure that your Java version is compatible (Java 8 or higher).
 - If you encounter any issues while running `mvn clean install`, make sure all dependencies are correctly downloaded and try running the command again.
-```
 
-This is the **Installation and Running** section in raw markdown format for you. You can now include it directly in your `README.md` file or elsewhere! Let me know if you need any further adjustments.
+
 
 ## Conclusion
 
