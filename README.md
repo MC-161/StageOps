@@ -83,7 +83,6 @@ nagement Screenshot](path/to/bookings-management-screenshot.png)
 - **Ease of Use**: User-friendly interface designed for quick access and easy navigation.
 - **Comprehensive Management**: From client profiles to room availability and event scheduling, everything you need is at your fingertips.
 
-  Sure! Here's the raw markdown for the **Installation and Running** section, formatted as requested:
 
 ```markdown
 ## Installation and Running
@@ -133,7 +132,6 @@ Before you begin, ensure you have the following installed:
 - If you encounter any issues while running `mvn clean install`, make sure all dependencies are correctly downloaded and try running the command again.
 ```
 
-This is the **Installation and Running** section in raw markdown format for you. You can now include it directly in your `README.md` file or elsewhere! Let me know if you need any further adjustments.
 
 ## Conclusion
 
