@@ -1,11 +1,29 @@
 package com.operations.StageOps;
 
+import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+
 import com.calendarfx.model.Calendar;
 import com.calendarfx.model.CalendarSource;
 import com.calendarfx.model.Entry;
 import com.calendarfx.view.CalendarView;
-import com.operations.StageOps.model.*;
+import com.operations.StageOps.model.Booking;
+import com.operations.StageOps.model.BookingRoomAssignment;
+import com.operations.StageOps.model.EventDto;
+import com.operations.StageOps.model.LayoutConfiguration;
+import com.operations.StageOps.model.Room;
+import com.operations.StageOps.model.Seating;
 import com.operations.StageOps.uiControllers.EventDetailsController;
+
 import javafx.collections.SetChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,16 +34,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
-
-import java.io.IOException;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Arrays;
-import java.util.List;
 
 @Component
 public class SimpleUiController {
@@ -50,8 +58,21 @@ public class SimpleUiController {
 
     private List<Button> allTabs;
     private final RestTemplate restTemplate = new RestTemplate();
-    private final String EVENTS_API_URL = "http://localhost:8080/api/events/all";  // Adjust if needed
-    private final String BOOKINGS_API_URL = "http://localhost:8080/booking/all";
+
+    @Value("${api.events.url}")
+    private String eventsApiUrl;
+
+    @Value("${api.bookings.url}")
+    private String bookingsApiUrl;
+
+    @Value("${api.seats.url}")
+    private String seatsApiUrl;
+
+    @Value("${api.rooms.url}")
+    private String roomsApiUrl;
+
+    @Value("${api.layouts.url}")
+    private String layoutsApiUrl;
 
 //    private static final Logger logger = LoggerFactory.getLogger(SimpleUiController.class);
 
@@ -72,7 +93,7 @@ public class SimpleUiController {
     // Fetch events from the API
     private List<EventDto> fetchEventsFromApi() {
         try {
-            EventDto[] events = restTemplate.getForObject(EVENTS_API_URL, EventDto[].class);
+            EventDto[] events = restTemplate.getForObject(eventsApiUrl, EventDto[].class);
             return events != null ? List.of(events) : List.of();
         } catch (Exception e) {
             e.printStackTrace();
@@ -81,7 +102,7 @@ public class SimpleUiController {
     }
     private List<Booking> fetchBookingsFromApi() {
         try {
-            Booking[] bookings = restTemplate.getForObject(BOOKINGS_API_URL, Booking[].class);
+            Booking[] bookings = restTemplate.getForObject(bookingsApiUrl, Booking[].class);
             return bookings != null ? List.of(bookings) : List.of();
         } catch (Exception e) {
             e.printStackTrace();
@@ -91,7 +112,7 @@ public class SimpleUiController {
 
     // Fetch available seats for a specific event
     private List<Seating> fetchAvailableSeats(int eventId) {
-        String url = "http://localhost:8080/api/events/" + eventId + "/seats";
+        String url = seatsApiUrl.replace("{eventId}", String.valueOf(eventId));
         Seating[] seats = restTemplate.getForObject(url, Seating[].class);
         return seats != null ? List.of(seats) : List.of();
     }
@@ -211,10 +232,8 @@ public class SimpleUiController {
     }
 
     private String fetchLayoutDetailsById(int layoutId) {
-        // Fetch layout details from an external service or database
-        String url = "http://localhost:8080/api/layouts/" + layoutId;
+        String url = layoutsApiUrl.replace("{layoutId}", String.valueOf(layoutId));
         LayoutConfiguration layout = restTemplate.getForObject(url, LayoutConfiguration.class);
-
         return (layout != null && layout.getLayoutName() != null) ? layout.getLayoutName() : "Unknown Layout";
     }
     /**
@@ -237,7 +256,7 @@ public class SimpleUiController {
 
     // Fetch room details by ID
     private Room fetchRoomDetailsById(int roomId) {
-        String url = "http://localhost:8080/api/rooms/" + roomId;
+        String url = roomsApiUrl.replace("{roomId}", String.valueOf(roomId));
         return restTemplate.getForObject(url, Room.class);
     }
     // Show event details in a modal window
@@ -417,20 +436,3 @@ public class SimpleUiController {
         }
     }
 }
-
-
-
-
-    // ===================== Utility Methods ====================
-
-//    // Fetch layouts from the API
-//    private ObservableList<LayoutConfiguration> fetchLayouts() {
-//        try {
-//            LayoutConfiguration[] layouts = restTemplate.getForObject(API_URL, LayoutConfiguration[].class);
-//            return layouts != null ? FXCollections.observableArrayList(layouts) : FXCollections.observableArrayList();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return FXCollections.observableArrayList();
-//        }
-//    }
-//}

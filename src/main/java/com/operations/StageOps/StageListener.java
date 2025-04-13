@@ -1,20 +1,23 @@
 package com.operations.StageOps;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import java.io.IOException;
+import java.net.URL;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.io.Resource;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.net.URL;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 @Component
 public class StageListener implements ApplicationListener<JavafxApplication.StageReadyEvent> {
+
 
     private final String applicationTitle;
     private final Resource fxml;
@@ -26,9 +29,8 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
         this.fxml = fxml;
         this.applicationContext = applicationContext;
     }
-
     @Override
-    public void onApplicationEvent(JavafxApplication.StageReadyEvent stageReadyEvent) {
+    public void onApplicationEvent(@NonNull JavafxApplication.StageReadyEvent stageReadyEvent) {
         try {
             Stage stage = stageReadyEvent.getStage();
             URL url = fxml.getURL();
