@@ -1,4 +1,4 @@
-```markdown 
+
 # StageOps - Venue Operations Software - README
 
 Welcome to **StageOps**! This software has been designed to streamline the management of your venue, enabling you to efficiently handle events, bookings, sales, revenue, and client interactions, all from a user-friendly interface.
@@ -59,6 +59,7 @@ nagement Screenshot](path/to/bookings-management-screenshot.png)
    - **Reports Generation**: Generate weekly, monthly, and daily sheets that provide a detailed overview of your venue's operations, bookings, and event schedules.
    - **Customizable Sheets**: Customize sheets to show specific data that is important to your venue's operations.
 <img width="1402" alt="Screenshot 2025-04-07 at 22 27 11" src="https://github.com/user-attachments/assets/408912aa-c384-4ea5-bed8-d8a479511006" />
+
 
 
 ## How to Use
@@ -142,4 +143,3 @@ For any support or further questions, please reach out to our customer service t
 ---
 
 Enjoy your experience with **StageOps** and happy managing!
-```
